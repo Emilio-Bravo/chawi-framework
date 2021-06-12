@@ -1,5 +1,5 @@
 {
-  "name": "chawi-framework",
+  "name": "chawi/chawi-framework",
   "description": "An MVC PHP framework",
   "type": "framework",
   "authors": [
