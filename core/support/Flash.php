@@ -11,6 +11,7 @@ class Flash
 
     public static function create($key, $value)
     {
+        Persistent::init();
         self::$session_key = $key;
         Persistent::create($key);
         Persistent::push_value($key, $value);

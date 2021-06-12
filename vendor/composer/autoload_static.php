@@ -61,6 +61,19 @@ class ComposerStaticInit8690bab61c5c73dbf30b1f5c2a28e2cb
         'Bravo\\ORM\\supportsCRUD' => __DIR__ . '/..' . '/emilio-bravo/bravo-orm/src/interfaces/supportsCRUDInterface.php',
         'Bravo\\ORM\\verifyiesData' => __DIR__ . '/..' . '/emilio-bravo/bravo-orm/src/traits/veryfiesDataTrait.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Core\\Client\\View' => __DIR__ . '/../..' . '/core/client/View.php',
+        'Core\\Client\\ViewHelper' => __DIR__ . '/../..' . '/core/client/ViewHelper.php',
+        'Core\\Foundation\\Controller' => __DIR__ . '/../..' . '/core/Foundation/Controller.php',
+        'Core\\Foundation\\Model' => __DIR__ . '/../..' . '/core/Foundation/Model.php',
+        'Core\\Http\\Persistent' => __DIR__ . '/../..' . '/core/HTTP/Persistent.php',
+        'Core\\Http\\Request' => __DIR__ . '/../..' . '/core/HTTP/Request.php',
+        'Core\\Http\\Response' => __DIR__ . '/../..' . '/core/HTTP/Response.php',
+        'Core\\Http\\Router' => __DIR__ . '/../..' . '/core/HTTP/Router.php',
+        'Core\\Http\\Traits\\responseMessages' => __DIR__ . '/../..' . '/core/Foundation/traits/responseMessagesTrait.php',
+        'Core\\Support\\Crypto' => __DIR__ . '/../..' . '/core/support/Crypto.php',
+        'Core\\Support\\Flash' => __DIR__ . '/../..' . '/core/support/Flash.php',
+        'Core\\Support\\HttpSanitizer' => __DIR__ . '/../..' . '/core/support/HttpSanitizer.php',
+        'Core\\Support\\Validator' => __DIR__ . '/../..' . '/core/support/Validator.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

@@ -9,7 +9,7 @@ class Persistent
         self::init();
     }
 
-    private static function init()
+    public static function init()
     {
         if (session_status() != PHP_SESSION_ACTIVE) session_start();
     }
