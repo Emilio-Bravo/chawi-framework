@@ -1,0 +1,21 @@
+{
+  "name": "emilio-bravo/note",
+  "description": "Note CRUD application",
+  "type": "project",
+  "authors": [
+    {
+      "name": "Emilio Bravo",
+      "email": "hsardrake@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/",
+      "Core\\": "core/"
+    }
+  },
+  "minimum-stability": "dev",
+  "require": {
+    "emilio-bravo/bravo-orm": "*"
+  }
+}
