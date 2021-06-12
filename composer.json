@@ -1,7 +1,7 @@
 {
-  "name": "emilio-bravo/note",
-  "description": "Note CRUD application",
-  "type": "project",
+  "name": "chawi-framework",
+  "description": "An MVC PHP framework",
+  "type": "framework",
   "authors": [
     {
       "name": "Emilio Bravo",
