@@ -16,7 +16,7 @@ class Validator
     ];
 
     private array $error_msg = [
-        'required' => 'This file is required',
+        'required' => 'The fields are required',
         'email' => 'Enter a valid email address',
         'string' => 'Just letters and numbers are allowed',
         'number' => 'Just numbers are allowed',
