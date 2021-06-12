@@ -30,17 +30,20 @@ class Validator
         'success' => 'success'
     ];
 
-    public function validate(array $data): void
+   public function validate(array $data): void
     {
         foreach ($data as $value => $rule_name) {
-            $this->extract_rule([$rule_name => $value]);
+            $rule_set = explode('|', $rule_name);
+            array_map(fn ($rule) => $this->extract_rule($rule, $value), $rule_set);
         }
     }
-    private function extract_rule(array $key_value): void
+    
+    private function extract_rule(string $rule_name, mixed $subject_data): void
     {
-        $this->performRuleValidation(key($key_value), array_values($key_value)[0]);
+        $this->performRuleValidation($rule_name, $subject_data);
     }
-    private function performRuleValidation(string $rule_name, $subject): void
+
+    private function performRuleValidation(string $rule_name, mixed $subject): void
     {
         if (!preg_match($this->rules[$rule_name], $subject)) {
             exit(\Core\Http\Response::cancel()->with($this->responses['error'], $this->error_msg[$rule_name]));
