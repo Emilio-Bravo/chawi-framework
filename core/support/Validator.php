@@ -6,7 +6,7 @@ class Validator
 {
 
     private array $rules = [
-        'required' => '/*/',
+        'required' => '/.+/',
         'email' => '/[\w\_.@%]+@[\w\d_.@%]+\.[\w\d]/',
         'string' => '/[A-z0-9]/',
         'number' => '/[0-9]/',
