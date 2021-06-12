@@ -61,7 +61,6 @@ class Crypto
 
     public static function createToken()
     {
-        \Core\Http\Persistent::create('TOKEN');
-        \Core\Http\Persistent::set_value('TOKEN', self::generateToken());
+         \Core\Http\Persistent::create('TOKEN', self::generateToken());
     }
 }
