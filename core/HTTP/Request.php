@@ -2,9 +2,14 @@
 
 namespace Core\Http;
 
+use Core\Support\Files\HandlesImages;
+use Core\Support\Files\HandlesRequestFiles;
+
 class Request
 {
-
+    
+    use HandlesRequestFiles, HandlesImages;
+    
     private ?array $input = [];
 
     public function __construct()
