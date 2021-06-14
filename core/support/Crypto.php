@@ -48,9 +48,9 @@ class Crypto
         return self::$code;
     }
 
-    public static function cryptoImage($request)
+    public static function cryptoImage(\Core\Http\Request $request, $key)
     {
-        return self::cryptoCode() . $request->getClientOriginalName();
+        return self::cryptoCode() . $request->getClientFileName($key);
     }
 
     public static function generateToken()
