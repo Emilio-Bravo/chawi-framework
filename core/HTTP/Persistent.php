@@ -14,9 +14,9 @@ class Persistent
         if (session_status() != PHP_SESSION_ACTIVE) session_start();
     }
 
-    public static function create(string $key): void
+    public static function create(string $key, $value): void
     {
-        $_SESSION[$key] = null;
+        $_SESSION[$key] = $value;
     }
 
     public static function destroy(string $key): void
