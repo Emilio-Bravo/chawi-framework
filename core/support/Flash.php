@@ -13,15 +13,13 @@ class Flash
     {
         Persistent::init();
         self::$session_key = $key;
-        Persistent::create($key);
-        Persistent::push_value($key, $value);
+        Persistent::create($key, $value);
         self::change_status();
     }
 
     public static function change_status()
     {
-        Persistent::create(self::$session_key . '_quit');
-        Persistent::push_value(self::$session_key . '_quit', true);
+        Persistent::create(self::$session_key . '_quit', true);
     }
 
     public static function enable()
@@ -35,3 +33,4 @@ class Flash
         }
     }
 }
+
