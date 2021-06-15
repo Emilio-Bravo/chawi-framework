@@ -3,11 +3,18 @@
 namespace Core\Http;
 
 use Core\Http\Traits\responseMessages;
+use Core\Http\Traits\Renderable;
 
 class Response
 {
 
-    use responseMessages;
+    use responseMessages, Renderable;
+
+    public function __construct($content = null, int $code = 200)
+    {
+        if (!is_null($content)) $this->render($content);
+        $this->setStatusCode($code);
+    }
 
     public function setStatusCode(int $code): void
     {
