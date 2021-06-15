@@ -4,9 +4,9 @@ namespace Core\Support\Files;
 
 trait HandlesRequestFiles
 {
-    public function hasFiles()
+    public function hasFiles(): bool
     {
-        return isset($_FILES) && !empty($_FILES);
+        return !empty($_FILES);
     }
 
     public function hasFile($key)
