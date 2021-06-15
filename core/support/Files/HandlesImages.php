@@ -49,6 +49,16 @@ trait HandlesImages
         array_map(fn ($key) => $this->uploadIfIsImage($key, $path, $key['name']), array_keys($_FILES));
     }
 
+    public function deleteFile(string $path, string $filename): void
+    {
+        unlink("$this->storage_path/$path/$filename");
+    }
+
+    public function getImage($path, string $filename): string
+    {
+        return file_get_contents("$this->storage_path/$path/$filename");
+    }
+
     private function buildImageMimeTypes(): void
     {
         array_map(fn ($value) => $this->image_mime_type[] = image_type_to_mime_type($value), $this->image_types);
