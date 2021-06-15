@@ -2,6 +2,8 @@
 
 namespace Core\Support\Files;
 
+use Core\FileSystems\Storage;
+
 trait HandlesImages
 {
     private array $image_types = [
@@ -26,22 +28,20 @@ trait HandlesImages
 
     private array $image_mime_type = [];
 
-    public string $storage_path = __DIR__ . '/../../../app/storage/public/';
-
     public function isImage(string $key): bool
     {
         $this->buildImageMimeTypes();
         return in_array($_FILES[$key]['type'], $this->image_mime_type);
     }
 
-    public function uploadImage(string $key, string $path, string $filename): void
+    public function upload(string $key, string $path, string $filename): void
     {
-        move_uploaded_file($_FILES[$key]['tmp_name'], "$this->storage_path/$path/$filename");
+        Storage::put($_FILES[$key]['tmp_name'], $path, $filename);
     }
 
     public function uploadIfIsImage(string $key, string $path, string $filename): void
     {
-        if ($this->isImage($key)) $this->uploadImage($key, $path, $filename);
+        if ($this->isImage($key)) $this->upload($key, $path, $filename);
     }
 
     public function uploadAllIfImages(string $path): void
@@ -51,12 +51,12 @@ trait HandlesImages
 
     public function deleteFile(string $path, string $filename): void
     {
-        unlink("$this->storage_path/$path/$filename");
+        Storage::delete($path, $filename);
     }
 
     public function getImage($path, string $filename): string
     {
-        return file_get_contents("$this->storage_path/$path/$filename");
+        return Storage::file($path, $filename);
     }
 
     private function buildImageMimeTypes(): void
