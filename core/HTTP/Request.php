@@ -4,11 +4,14 @@ namespace Core\Http;
 
 use Core\Support\Files\HandlesImages;
 use Core\Support\Files\HandlesRequestFiles;
+use Core\Support\Files\handlesUploadedFiles;
 
 class Request
 {
 
-    use HandlesRequestFiles, HandlesImages;
+    use HandlesRequestFiles,
+        HandlesImages,
+        handlesUploadedFiles;
 
     private ?array $input = [];
 
@@ -65,28 +68,5 @@ class Request
     public function setInputValue(string $input, $value): void
     {
         $this->input[$input] = $value;
-    }
-
-    public function imageUploadProccess(string $path, ...$keys): void
-    {
-        if ($this->hasFiles()) {
-            foreach ($keys as $files_key) {
-                $filename = \Core\Support\Crypto::cryptoImage($this, $files_key);
-                $this->uploadIfIsImage($files_key, $path, $filename);
-                $this->setInputValue($files_key, $filename);
-            }
-        }
-    }
-
-    public function imageUpdateProccess(string $path, array $keys, array $delete_filenames): void
-    {
-        if ($this->hasFiles()) {
-            array_map(fn ($filename) => $this->deleteFile($path, $filename), $delete_filenames);
-            foreach ($keys as $files_key) {
-                $filename = \Core\Support\Crypto::cryptoImage($this, $files_key);
-                $this->uploadIfIsImage($files_key, $path, $filename);
-                $this->setInputValue($files_key, $filename);
-            }
-        }
     }
 }

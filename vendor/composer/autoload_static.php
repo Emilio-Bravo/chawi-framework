@@ -42,6 +42,7 @@ class ComposerStaticInit8690bab61c5c73dbf30b1f5c2a28e2cb
     );
 
     public static $classMap = array (
+        'App\\Controllers\\TestController' => __DIR__ . '/../..' . '/app/controllers/testController.php',
         'Bravo\\ORM\\BravoORM' => __DIR__ . '/..' . '/emilio-bravo/bravo-orm/src/ORM/BravoORM.php',
         'Bravo\\ORM\\DB' => __DIR__ . '/..' . '/emilio-bravo/bravo-orm/src/Database/DB.php',
         'Bravo\\ORM\\DataHandler' => __DIR__ . '/..' . '/emilio-bravo/bravo-orm/src/helpers/DataHandler.php',
@@ -73,8 +74,9 @@ class ComposerStaticInit8690bab61c5c73dbf30b1f5c2a28e2cb
         'Core\\Http\\Traits\\Renderable' => __DIR__ . '/../..' . '/core/Foundation/traits/RenderableTrait.php',
         'Core\\Http\\Traits\\responseMessages' => __DIR__ . '/../..' . '/core/Foundation/traits/responseMessagesTrait.php',
         'Core\\Support\\Crypto' => __DIR__ . '/../..' . '/core/support/Crypto.php',
-        'Core\\Support\\Files\\HandlesImages' => __DIR__ . '/../..' . '/core/support/Files/HandlesImages.php',
+        'Core\\Support\\Files\\HandlesImages' => __DIR__ . '/../..' . '/core/support/Files/handlesImages.php',
         'Core\\Support\\Files\\HandlesRequestFiles' => __DIR__ . '/../..' . '/core/support/Files/handlesRequestFiles.php',
+        'Core\\Support\\Files\\handlesUploadedFiles' => __DIR__ . '/../..' . '/core/support/Files/handlesUploadedFilesTrait.php',
         'Core\\Support\\Flash' => __DIR__ . '/../..' . '/core/support/Flash.php',
         'Core\\Support\\HttpSanitizer' => __DIR__ . '/../..' . '/core/support/HttpSanitizer.php',
         'Core\\Support\\Validator' => __DIR__ . '/../..' . '/core/support/Validator.php',
