@@ -8,13 +8,17 @@ class Router
     private Request $request;
     private string $uri;
     private string $method;
-
+    public array $routes = [];
+    
     public function __construct()
     {
         $this->request = new Request;
     }
 
-    public array $routes = [];
+    public function __destruct()
+    {
+        $this->resolve();
+    }
 
     public function resolve()
     {
