@@ -6,7 +6,7 @@ class DatabseEnv
 {
     public const DATABASE_DRIVER = 'mysql';
     public const DATABASE_SERVER = 'localhost';
-    public const DATABASE_NAME = 'notes';
+    public const DATABASE_NAME = 'symfony';
     public const DATABASE_USER = 'root';
     public const DATABASE_PASSWORD = '';
     public const DATABASE_PORT = '';
