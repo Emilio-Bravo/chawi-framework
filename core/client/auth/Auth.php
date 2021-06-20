@@ -33,10 +33,16 @@ class Auth
 
         if (is_object($user) && password_verify($password, $user->password)) {
             $this->setSession((array) $user);
-            $response->redirect()->with('success', "Welcome {$user->name}");
+            return $response->redirect()->with('success', "Welcome {$user->name}");
         }
 
         return $response->redirect()->withError('Incorrect username and / or password');
+    }
+
+    public function newUser(array $data, string $password_key): void
+    {
+        $data[$password_key] = \Core\Support\Crypto::cryptoPassword($data[$password_key]);
+        $this->model::insert($data);
     }
 
     public function setSession(array $data): void
