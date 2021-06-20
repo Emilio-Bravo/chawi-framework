@@ -42,6 +42,10 @@ class ComposerStaticInit8690bab61c5c73dbf30b1f5c2a28e2cb
     );
 
     public static $classMap = array (
+        'App\\Controllers\\ProductController' => __DIR__ . '/../..' . '/app/controllers/ProductController.php',
+        'App\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/controllers/UserController.php',
+        'App\\Models\\Product' => __DIR__ . '/../..' . '/app/models/Product.php',
+        'App\\Models\\User' => __DIR__ . '/../..' . '/app/models/User.php',
         'Bravo\\ORM\\BravoORM' => __DIR__ . '/..' . '/emilio-bravo/bravo-orm/src/ORM/BravoORM.php',
         'Bravo\\ORM\\DB' => __DIR__ . '/..' . '/emilio-bravo/bravo-orm/src/Database/DB.php',
         'Bravo\\ORM\\DataHandler' => __DIR__ . '/..' . '/emilio-bravo/bravo-orm/src/helpers/DataHandler.php',
@@ -62,6 +66,7 @@ class ComposerStaticInit8690bab61c5c73dbf30b1f5c2a28e2cb
         'Bravo\\ORM\\verifyiesData' => __DIR__ . '/..' . '/emilio-bravo/bravo-orm/src/traits/veryfiesDataTrait.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Core\\Client\\Authentification\\Auth' => __DIR__ . '/../..' . '/core/client/auth/Auth.php',
+        'Core\\Client\\Authentification\\guestsNotAllowed' => __DIR__ . '/../..' . '/core/client/auth/guestsNotAllowed.php',
         'Core\\Client\\View' => __DIR__ . '/../..' . '/core/client/View.php',
         'Core\\Client\\ViewHelper' => __DIR__ . '/../..' . '/core/client/ViewHelper.php',
         'Core\\FileSystems\\Storage' => __DIR__ . '/../..' . '/core/FileSystems/Storage.php',
@@ -75,6 +80,8 @@ class ComposerStaticInit8690bab61c5c73dbf30b1f5c2a28e2cb
         'Core\\Http\\Request' => __DIR__ . '/../..' . '/core/HTTP/Request.php',
         'Core\\Http\\Response' => __DIR__ . '/../..' . '/core/HTTP/Response.php',
         'Core\\Http\\Router' => __DIR__ . '/../..' . '/core/HTTP/Router.php',
+        'Core\\Http\\Traits\\Renderable' => __DIR__ . '/../..' . '/core/Foundation/traits/RenderableTrait.php',
+        'Core\\Http\\Traits\\responseMessages' => __DIR__ . '/../..' . '/core/Foundation/traits/responseMessagesTrait.php',
         'Core\\Support\\Crypto' => __DIR__ . '/../..' . '/core/support/Crypto.php',
         'Core\\Support\\Files\\HandlesImages' => __DIR__ . '/../..' . '/core/support/Files/handlesImages.php',
         'Core\\Support\\Files\\HandlesRequestFiles' => __DIR__ . '/../..' . '/core/support/Files/handlesRequestFiles.php',

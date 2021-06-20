@@ -6,6 +6,10 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Controllers\\ProductController' => $baseDir . '/app/controllers/ProductController.php',
+    'App\\Controllers\\UserController' => $baseDir . '/app/controllers/UserController.php',
+    'App\\Models\\Product' => $baseDir . '/app/models/Product.php',
+    'App\\Models\\User' => $baseDir . '/app/models/User.php',
     'Bravo\\ORM\\BravoORM' => $vendorDir . '/emilio-bravo/bravo-orm/src/ORM/BravoORM.php',
     'Bravo\\ORM\\DB' => $vendorDir . '/emilio-bravo/bravo-orm/src/Database/DB.php',
     'Bravo\\ORM\\DataHandler' => $vendorDir . '/emilio-bravo/bravo-orm/src/helpers/DataHandler.php',
@@ -26,6 +30,7 @@ return array(
     'Bravo\\ORM\\verifyiesData' => $vendorDir . '/emilio-bravo/bravo-orm/src/traits/veryfiesDataTrait.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Core\\Client\\Authentification\\Auth' => $baseDir . '/core/client/auth/Auth.php',
+    'Core\\Client\\Authentification\\guestsNotAllowed' => $baseDir . '/core/client/auth/guestsNotAllowed.php',
     'Core\\Client\\View' => $baseDir . '/core/client/View.php',
     'Core\\Client\\ViewHelper' => $baseDir . '/core/client/ViewHelper.php',
     'Core\\FileSystems\\Storage' => $baseDir . '/core/FileSystems/Storage.php',
@@ -39,6 +44,8 @@ return array(
     'Core\\Http\\Request' => $baseDir . '/core/HTTP/Request.php',
     'Core\\Http\\Response' => $baseDir . '/core/HTTP/Response.php',
     'Core\\Http\\Router' => $baseDir . '/core/HTTP/Router.php',
+    'Core\\Http\\Traits\\Renderable' => $baseDir . '/core/Foundation/traits/RenderableTrait.php',
+    'Core\\Http\\Traits\\responseMessages' => $baseDir . '/core/Foundation/traits/responseMessagesTrait.php',
     'Core\\Support\\Crypto' => $baseDir . '/core/support/Crypto.php',
     'Core\\Support\\Files\\HandlesImages' => $baseDir . '/core/support/Files/handlesImages.php',
     'Core\\Support\\Files\\HandlesRequestFiles' => $baseDir . '/core/support/Files/handlesRequestFiles.php',
