@@ -33,7 +33,7 @@ class Auth
 
         if (is_object($user) && password_verify($password, $user->password)) {
             $this->setSession((array) $user);
-            return $response->redirect()->with('success', "Welcome {$user->name}");
+            return $response->redirect()->withSuccess("Welcome {$user->name}");
         }
 
         return $response->redirect()->withError('Incorrect username and / or password');
