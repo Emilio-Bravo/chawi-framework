@@ -43,6 +43,7 @@ return array(
     'Core\\Http\\Persistent' => $baseDir . '/core/HTTP/Persistent.php',
     'Core\\Http\\Request' => $baseDir . '/core/HTTP/Request.php',
     'Core\\Http\\Response' => $baseDir . '/core/HTTP/Response.php',
+    'Core\\Http\\ResponseComplements\\redirectResponse' => $baseDir . '/core/HTTP/responseComplements/redirectResponse.php',
     'Core\\Http\\Router' => $baseDir . '/core/HTTP/Router.php',
     'Core\\Http\\Traits\\Renderable' => $baseDir . '/core/Foundation/traits/RenderableTrait.php',
     'Core\\Http\\Traits\\responseMessages' => $baseDir . '/core/Foundation/traits/responseMessagesTrait.php',

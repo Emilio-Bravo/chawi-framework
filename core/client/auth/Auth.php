@@ -7,12 +7,12 @@ class Auth
 
     private object $model;
 
-    public $error_msgs = [
+    public array $error_msgs = [
         'error' => 'Incorrect username and / or password',
         'success' => 'Welcome'
     ];
 
-    public $auth_keys = [
+    public array $auth_keys = [
         'user_auth_key' => 'email',
         'user_auth_password' => 'password'
     ];
@@ -41,8 +41,17 @@ class Auth
 
     public function newUser(array $data, string $password_key): void
     {
-        $data[$password_key] = \Core\Support\Crypto::cryptoPassword($data[$password_key]);
-        $this->model::insert($data);
+
+        $email = $data[$this->auth_keys['user_auth_key']];
+
+        if ($this->emailIsUnique($email)) {
+            $data[$password_key] = \Core\Support\Crypto::cryptoPassword($data[$password_key]);
+            $this->model::insert($data);
+        } else {
+            exit((string) new \Core\Http\ResponseComplements\redirectResponse('/', [
+                'error' => "$email is already in use"
+            ], 500));
+        }
     }
 
     public function setSession(array $data): void
@@ -55,5 +64,16 @@ class Auth
         \Core\Http\Persistent::destroy('user');
         $response = new \Core\Http\Response;
         return $response->redirect();
+    }
+
+    private function emailIsUnique(string $email): bool
+    {
+        return count(
+            $this->model::findAll(
+                [
+                    $this->auth_keys['user_auth_key'] => $email
+                ]
+            )
+        ) < 1;
     }
 }

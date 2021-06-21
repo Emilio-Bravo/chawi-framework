@@ -79,6 +79,7 @@ class ComposerStaticInit8690bab61c5c73dbf30b1f5c2a28e2cb
         'Core\\Http\\Persistent' => __DIR__ . '/../..' . '/core/HTTP/Persistent.php',
         'Core\\Http\\Request' => __DIR__ . '/../..' . '/core/HTTP/Request.php',
         'Core\\Http\\Response' => __DIR__ . '/../..' . '/core/HTTP/Response.php',
+        'Core\\Http\\ResponseComplements\\redirectResponse' => __DIR__ . '/../..' . '/core/HTTP/responseComplements/redirectResponse.php',
         'Core\\Http\\Router' => __DIR__ . '/../..' . '/core/HTTP/Router.php',
         'Core\\Http\\Traits\\Renderable' => __DIR__ . '/../..' . '/core/Foundation/traits/RenderableTrait.php',
         'Core\\Http\\Traits\\responseMessages' => __DIR__ . '/../..' . '/core/Foundation/traits/responseMessagesTrait.php',

@@ -8,18 +8,18 @@ trait guestsNotAllowed
     public function __construct()
     {
         parent::__construct();
-        $this->isAuthenticated();
+        $this->mustBeAuthenticated();
     }
 
-    private function isAuthenticated()
+    private function mustBeAuthenticated(): void
     {
         if (!\Core\Http\Persistent::get('user')) {
-            
+
             $response = new \Core\Http\Response;
-            
-            $response->redirect(
+
+            exit((string) $response->redirect(
                 isset($this->redirect_path) ? $this->redirect_path : '/user/login'
-            );
+            ));
         }
     }
 }

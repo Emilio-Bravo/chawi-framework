@@ -14,9 +14,9 @@ class Controller
         $this->response = new \Core\Http\Response;
     }
 
-    protected function render($view, array $vars = []): void
+    protected function render($view, array $vars = [], $code = 200): void
     {
-        echo $this->view->render($view, $vars);
+        new \Core\Http\Response($this->view->render($view, $vars), $code);
         \Core\Support\Flash::enable(); //Enbale flash sessions
     }
 
