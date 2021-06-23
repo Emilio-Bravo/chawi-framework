@@ -48,10 +48,12 @@ return array(
     'Core\\Http\\Traits\\Renderable' => $baseDir . '/core/Foundation/traits/RenderableTrait.php',
     'Core\\Http\\Traits\\responseMessages' => $baseDir . '/core/Foundation/traits/responseMessagesTrait.php',
     'Core\\Support\\Crypto' => $baseDir . '/core/support/Crypto.php',
+    'Core\\Support\\Exceptions\\validationException' => $baseDir . '/core/support/exceptions/validationException.php',
     'Core\\Support\\Files\\HandlesImages' => $baseDir . '/core/support/Files/handlesImages.php',
     'Core\\Support\\Files\\HandlesRequestFiles' => $baseDir . '/core/support/Files/handlesRequestFiles.php',
     'Core\\Support\\Files\\handlesUploadedFiles' => $baseDir . '/core/support/Files/handlesUploadedFilesTrait.php',
     'Core\\Support\\Flash' => $baseDir . '/core/support/Flash.php',
+    'Core\\Support\\Formating\\Str' => $baseDir . '/core/support/formating/Str.php',
     'Core\\Support\\HttpSanitizer' => $baseDir . '/core/support/HttpSanitizer.php',
     'Core\\Support\\Validator' => $baseDir . '/core/support/Validator.php',
 );

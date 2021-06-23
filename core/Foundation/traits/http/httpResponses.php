@@ -28,7 +28,7 @@ trait httpResponses
 
     public static function cancel(): \Core\Http\Response
     {
-        header('location:' . $_SERVER['HTTP_REFERER']);
+        header('location:' . \Core\Http\Server::referer());
         return new static;
     }
 }

@@ -20,22 +20,9 @@ class Request
         $this->sanitizeRequest();
     }
 
-    public function getMethod(): string
-    {
-        return $_SERVER['REQUEST_METHOD'];
-    }
-
-    public function getURI(): string
-    {
-        $path = $_SERVER['REQUEST_URI'];
-        $position = strpos($path, '?');
-        if ($position === false) return $path;
-        return substr($path, 0, $position);
-    }
-
     private function sanitizeRequest(): void
     {
-        switch ($this->getMethod()) {
+        switch (\Core\Http\Server::method()) {
             case 'GET':
                 $this->input = \Core\Support\HttpSanitizer::sanitize_get();
                 break;
@@ -45,19 +32,17 @@ class Request
         }
     }
 
-    public function all(): ?array
+    public function all(): array
     {
-        return $this->input;
+        return (array) $this->input;
     }
 
-    public function except(...$inputs)
+    public function except(...$inputs): array
     {
         foreach ($this->input as $key => $value) {
-            if (!preg_match('/' . implode('|', $inputs) . '/', $key)) {
-                $expected[$key] = $value;
-            }
+            if (!in_array($key, $inputs)) $expected[$key] = $value;
         }
-        return $expected;
+        return (array) $expected;
     }
 
     public function input(string $input)

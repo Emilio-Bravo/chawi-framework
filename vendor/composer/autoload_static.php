@@ -84,10 +84,12 @@ class ComposerStaticInit8690bab61c5c73dbf30b1f5c2a28e2cb
         'Core\\Http\\Traits\\Renderable' => __DIR__ . '/../..' . '/core/Foundation/traits/RenderableTrait.php',
         'Core\\Http\\Traits\\responseMessages' => __DIR__ . '/../..' . '/core/Foundation/traits/responseMessagesTrait.php',
         'Core\\Support\\Crypto' => __DIR__ . '/../..' . '/core/support/Crypto.php',
+        'Core\\Support\\Exceptions\\validationException' => __DIR__ . '/../..' . '/core/support/exceptions/validationException.php',
         'Core\\Support\\Files\\HandlesImages' => __DIR__ . '/../..' . '/core/support/Files/handlesImages.php',
         'Core\\Support\\Files\\HandlesRequestFiles' => __DIR__ . '/../..' . '/core/support/Files/handlesRequestFiles.php',
         'Core\\Support\\Files\\handlesUploadedFiles' => __DIR__ . '/../..' . '/core/support/Files/handlesUploadedFilesTrait.php',
         'Core\\Support\\Flash' => __DIR__ . '/../..' . '/core/support/Flash.php',
+        'Core\\Support\\Formating\\Str' => __DIR__ . '/../..' . '/core/support/formating/Str.php',
         'Core\\Support\\HttpSanitizer' => __DIR__ . '/../..' . '/core/support/HttpSanitizer.php',
         'Core\\Support\\Validator' => __DIR__ . '/../..' . '/core/support/Validator.php',
     );

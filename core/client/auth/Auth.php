@@ -2,9 +2,10 @@
 
 namespace Core\Client\Authentification;
 
+use Core\Http\ResponseComplements\redirectResponse;
+
 class Auth
 {
-
     private object $model;
 
     public array $error_msgs = [
@@ -22,21 +23,20 @@ class Auth
         $this->model = new $model;
     }
 
-    public function auth(string $user_auth_key, string $password): \Core\Http\Response
+    public function auth(string $user_auth_key, string $password): redirectResponse
     {
-
-        $response = new \Core\Http\Response;
-
         $user = $this->model::find([
             $this->auth_keys['user_auth_key'] => $user_auth_key
         ]);
 
         if (is_object($user) && password_verify($password, $user->password)) {
             $this->setSession((array) $user);
-            return $response->redirect()->withSuccess("Welcome {$user->name}");
+            return new redirectResponse('/', ['success' => "Welcome {$user->name}"]);
         }
 
-        return $response->redirect()->withError('Incorrect username and / or password');
+        return new redirectResponse('/', [
+            'error' => 'Incorrect username and / or password'
+        ]);
     }
 
     public function newUser(array $data, string $password_key): void
@@ -48,7 +48,7 @@ class Auth
             $data[$password_key] = \Core\Support\Crypto::cryptoPassword($data[$password_key]);
             $this->model::insert($data);
         } else {
-            exit((string) new \Core\Http\ResponseComplements\redirectResponse('/', [
+            exit((string) new redirectResponse('/', [
                 'error' => "$email is already in use"
             ], 500));
         }
@@ -59,11 +59,10 @@ class Auth
         \Core\Http\Persistent::create('user', (object) $data);
     }
 
-    public function logout(): \Core\Http\Response
+    public function logout(): redirectResponse
     {
         \Core\Http\Persistent::destroy('user');
-        $response = new \Core\Http\Response;
-        return $response->redirect();
+        return new redirectResponse('/');
     }
 
     private function emailIsUnique(string $email): bool

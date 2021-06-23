@@ -5,15 +5,9 @@ namespace Core\Http;
 class Router
 {
 
-    private Request $request;
     private string $uri;
     private string $method;
     public array $routes = [];
-    
-    public function __construct()
-    {
-        $this->request = new Request;
-    }
 
     public function __destruct()
     {
@@ -38,14 +32,8 @@ class Router
 
     public function setRouterInfo(): void
     {
-        $this->method = $this->request->getMethod();
-        $this->uri = $this->request->getURI();
-    }
-
-    public function toRegex(string $str): string
-    {
-        $str = stripcslashes($str);
-        return str_pad($str, strlen($str), '/', STR_PAD_BOTH);
+        $this->method = \Core\Http\Server::method();
+        $this->uri = \Core\Http\Server::uri();
     }
 
     public function get(string $path, $callback)
