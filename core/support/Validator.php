@@ -39,13 +39,8 @@ class Validator
     {
         foreach ($data as $value => $rule_name) {
             $rule_set = explode('|', $rule_name);
-            array_map(fn ($rule) => $this->extract_rule($rule, $value), $rule_set);
+            array_map(fn ($rule) => $this->performRuleValidation($rule, $value), $rule_set);
         }
-    }
-
-    private function extract_rule(string $rule_name, mixed $subject_data): void
-    {
-        $this->performRuleValidation($rule_name, $subject_data);
     }
 
     private function handleVariableRules(string $rule, string $subject)
