@@ -34,7 +34,7 @@ class Auth
             return new redirectResponse('/', ['success' => "Welcome {$user->name}"]);
         }
 
-        return new redirectResponse('/', [
+        return new redirectResponse('back', [
             'error' => 'Incorrect username and / or password'
         ]);
     }
@@ -48,7 +48,7 @@ class Auth
             $data[$password_key] = \Core\Support\Crypto::cryptoPassword($data[$password_key]);
             $this->model::insert($data);
         } else {
-            exit((string) new redirectResponse('/', [
+            exit((string) new redirectResponse('back', [
                 'error' => "$email is already in use"
             ], 500));
         }
@@ -74,5 +74,10 @@ class Auth
                 ]
             )
         ) < 1;
+    }
+
+    public static function user()
+    {
+        return (object) \Core\Http\Persistent::get('user');
     }
 }

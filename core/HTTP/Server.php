@@ -21,4 +21,9 @@ class Server
         if ($position === false) return $path;
         return substr($path, 0, $position);
     }
+
+    public static function server()
+    {
+        return $_SERVER;
+    }
 }

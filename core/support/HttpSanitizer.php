@@ -9,7 +9,7 @@ class HttpSanitizer
         foreach ($_POST as $key => $value) {
             $sanitized[$key] = trim(filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS));
         }
-        return $sanitized;
+        return @$sanitized;
     }
 
     public static function sanitize_get()

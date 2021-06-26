@@ -2,6 +2,7 @@
 
 namespace Core\Http;
 
+use Core\Http\RequestComplements\handlesRequestHeaders;
 use Core\Support\Files\HandlesImages;
 use Core\Support\Files\HandlesRequestFiles;
 use Core\Support\Files\handlesUploadedFiles;
@@ -13,11 +14,14 @@ class Request
         HandlesImages,
         handlesUploadedFiles;
 
+    use handlesRequestHeaders;
+
     private ?array $input = [];
 
     public function __construct()
     {
         $this->sanitizeRequest();
+        $this->parseRequestHeaders();
     }
 
     private function sanitizeRequest(): void

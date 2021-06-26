@@ -9,7 +9,7 @@ trait httpResponses
         http_response_code($code);
     }
 
-    public function redirect(string $location = '/', int $code = 200): \Core\Http\Response
+    public function redirect(string $location = '/', int $code = 200): self
     {
         $this->statusCode($code);
         header("location:$location");
@@ -26,7 +26,7 @@ trait httpResponses
         array_map(fn ($header) => header($header), $headers);
     }
 
-    public static function cancel(): \Core\Http\Response
+    public static function cancel(): self
     {
         header('location:' . \Core\Http\Server::referer());
         return new static;

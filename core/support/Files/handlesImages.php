@@ -24,6 +24,7 @@ trait HandlesImages
         IMAGETYPE_WBMP,
         IMAGETYPE_XBM,
         IMAGETYPE_ICO,
+        IMAGETYPE_WEBP
     ];
 
     private array $image_mime_type = [];

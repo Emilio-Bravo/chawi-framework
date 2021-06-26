@@ -19,7 +19,7 @@ trait guestsNotAllowed
 
             exit((string) $response->redirect(
                 isset($this->redirect_path) ? $this->redirect_path : '/user/login'
-            ));
+            )->withError('You need to be identified'));
         }
     }
 }
