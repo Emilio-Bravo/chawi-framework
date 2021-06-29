@@ -59,7 +59,7 @@ class Auth
         \Core\Http\Persistent::create('user', (object) $data);
     }
 
-    public function logout(): redirectResponse
+    public static function logout(): redirectResponse
     {
         \Core\Http\Persistent::destroy('user');
         return new redirectResponse('/');
