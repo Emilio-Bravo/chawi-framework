@@ -67,5 +67,3 @@ class UploadedFile
         return $this->currentFile = false;
     }
 }
-
-  //file_put_contents("Tmpfile.zip", fopen("http://someurl/file.zip", 'r'));
