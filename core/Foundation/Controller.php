@@ -27,12 +27,12 @@ class Controller
 
     protected function back(): \Core\Http\Response
     {
-        return $this->redirect($_SERVER['HTTP_REFERER']);
+        return $this->redirect(\Core\Http\Server::referer());
     }
 
-    protected function validate(array $data_patern): void
+    protected function validate(\Core\Http\Request $request, array $data_patern): void
     {
         $validator = new \Core\Support\Validator;
-        $validator->validate($data_patern);
+        $validator->validate($request, $data_patern);
     }
 }

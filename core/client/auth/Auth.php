@@ -8,9 +8,10 @@ class Auth
 {
     private object $model;
 
-    public array $error_msgs = [
+    public array $response_msgs = [
         'error' => 'Incorrect username and / or password',
-        'success' => 'Welcome'
+        'email_error' => '%s is already in use',
+        'success' => 'Welcome %s'
     ];
 
     public array $auth_keys = [
@@ -31,11 +32,20 @@ class Auth
 
         if (is_object($user) && password_verify($password, $user->password)) {
             $this->setSession((array) $user);
-            return new redirectResponse('/', ['success' => "Welcome {$user->name}"]);
+
+            return new redirectResponse(
+                '/',
+                [
+                    'success' => sprintf(
+                        $this->response_msgs['success'],
+                        $user->name
+                    )
+                ]
+            );
         }
 
         return new redirectResponse('back', [
-            'error' => 'Incorrect username and / or password'
+            'error' => $this->response_msgs['error']
         ]);
     }
 
@@ -48,9 +58,17 @@ class Auth
             $data[$password_key] = \Core\Support\Crypto::cryptoPassword($data[$password_key]);
             $this->model::insert($data);
         } else {
-            exit((string) new redirectResponse('back', [
-                'error' => "$email is already in use"
-            ], 500));
+
+            exit((string) new redirectResponse(
+                'back',
+                [
+                    'error' => sprintf(
+                        $this->response_msgs['email_error'],
+                        $email
+                    )
+                ],
+                500
+            ));
         }
     }
 
@@ -59,7 +77,7 @@ class Auth
         \Core\Http\Persistent::create('user', (object) $data);
     }
 
-    public static function logout(): redirectResponse
+    public function logout(): redirectResponse
     {
         \Core\Http\Persistent::destroy('user');
         return new redirectResponse('/');

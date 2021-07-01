@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Controllers\\ImageController' => $baseDir . '/app/controllers/ImageController.php',
     'App\\Controllers\\ProductController' => $baseDir . '/app/controllers/ProductController.php',
     'App\\Controllers\\UserController' => $baseDir . '/app/controllers/UserController.php',
     'App\\Models\\Product' => $baseDir . '/app/models/Product.php',
@@ -40,8 +41,10 @@ return array(
     'Core\\Foundation\\Traits\\Http\\canMorphContent' => $baseDir . '/core/Foundation/traits/http/canMorphContent.php',
     'Core\\Foundation\\Traits\\Http\\httpResponses' => $baseDir . '/core/Foundation/traits/http/httpResponses.php',
     'Core\\Foundation\\Traits\\Http\\responseMessages' => $baseDir . '/core/Foundation/traits/http/responseMessagesTrait.php',
+    'Core\\Http\\File' => $baseDir . '/core/HTTP/File.php',
     'Core\\Http\\Persistent' => $baseDir . '/core/HTTP/Persistent.php',
     'Core\\Http\\Request' => $baseDir . '/core/HTTP/Request.php',
+    'Core\\Http\\RequestComplements\\UploadedFile' => $baseDir . '/core/HTTP/requestComplements/UploadedFile.php',
     'Core\\Http\\RequestComplements\\handlesRequestHeaders' => $baseDir . '/core/HTTP/requestComplements/handlesRequestHeadersTrait.php',
     'Core\\Http\\Response' => $baseDir . '/core/HTTP/Response.php',
     'Core\\Http\\ResponseComplements\\redirectResponse' => $baseDir . '/core/HTTP/responseComplements/redirectResponse.php',
@@ -54,6 +57,7 @@ return array(
     'Core\\Support\\Files\\HandlesRequestFiles' => $baseDir . '/core/support/Files/handlesRequestFiles.php',
     'Core\\Support\\Files\\handlesUploadedFiles' => $baseDir . '/core/support/Files/handlesUploadedFilesTrait.php',
     'Core\\Support\\Flash' => $baseDir . '/core/support/Flash.php',
+    'Core\\Support\\Formating\\Carbon' => $baseDir . '/core/support/formating/Carbon.php',
     'Core\\Support\\Formating\\Str' => $baseDir . '/core/support/formating/Str.php',
     'Core\\Support\\HttpSanitizer' => $baseDir . '/core/support/HttpSanitizer.php',
     'Core\\Support\\Validator' => $baseDir . '/core/support/Validator.php',

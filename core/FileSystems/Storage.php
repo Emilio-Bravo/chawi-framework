@@ -2,23 +2,39 @@
 
 namespace Core\FileSystems;
 
+use Core\Http\RequestComplements\UploadedFile;
+
 class Storage
 {
 
-    public static string $storage_path = __DIR__ . '/../../app/storage/public/';
+    public string $storagePath = __DIR__ . '/../../app/storage/public/';
 
-    public static function file(string $path, string $filename): string
+    public string $currentFolder;
+
+    public function __construct(string $folder)
     {
-        return file_get_contents(self::$storage_path . "$path/$filename");
+        $this->currentFolder = $folder;
     }
 
-    public static function delete(string $path, string $filename): void
+    public function get(string $filename): string
     {
-        unlink(self::$storage_path . "$path/$filename");
+        return file_get_contents("{$this->storagePath}{$this->currentFolder}/$filename");
     }
 
-    public static function put(string $current_file_path, string $destination_path, string $filename): void
+    public function delete(string $filename): void
     {
-        move_uploaded_file($current_file_path, self::$storage_path . "$destination_path/$filename");
+        unlink("{$this->storagePath}{$this->currentFolder}/$filename");
+    }
+
+    public function put(UploadedFile $file, string $path): void
+    {
+        if ($file instanceof UploadedFile) {
+            move_uploaded_file($file->tmpName(), "{$this->storagePath}{$this->currentFolder}/$path");
+        }
+    }
+
+    public static function from(string $folder): self
+    {
+        return (new self($folder));
     }
 }

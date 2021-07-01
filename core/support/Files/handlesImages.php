@@ -3,6 +3,7 @@
 namespace Core\Support\Files;
 
 use Core\FileSystems\Storage;
+use Core\Http\RequestComplements\UploadedFile;
 
 trait HandlesImages
 {
@@ -29,35 +30,33 @@ trait HandlesImages
 
     private array $image_mime_type = [];
 
-    public function isImage(string $key): bool
+    public function isImage(UploadedFile $file): bool
     {
         $this->buildImageMimeTypes();
-        return in_array($_FILES[$key]['type'], $this->image_mime_type);
+        return in_array($file->currentFile()->type, $this->image_mime_type);
     }
 
-    public function upload(string $key, string $path, string $filename): void
+    public function upload(UploadedFile $file, string $to, string $path): void
     {
-        Storage::put($_FILES[$key]['tmp_name'], $path, $filename);
+        Storage::from($to)->put(
+            $file,
+            $path
+        );
     }
 
-    public function uploadIfIsImage(string $key, string $path, string $filename): void
+    public function uploadIfIsImage(UploadedFile $key, string $to, string $path): void
     {
-        if ($this->isImage($key)) $this->upload($key, $path, $filename);
-    }
-
-    public function uploadAllIfImages(string $path): void
-    {
-        array_map(fn ($key) => $this->uploadIfIsImage($key, $path, $key['name']), array_keys($_FILES));
+        if ($this->isImage($key)) $this->upload($key, $to, $path);
     }
 
     public function deleteFile(string $path, string $filename): void
     {
-        Storage::delete($path, $filename);
+        Storage::from($path)->delete($filename);
     }
 
-    public function getImage($path, string $filename): string
+    public function getFile($path, string $filename): string
     {
-        return Storage::file($path, $filename);
+        return Storage::from($path)->get($filename);
     }
 
     private function buildImageMimeTypes(): void

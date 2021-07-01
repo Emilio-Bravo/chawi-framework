@@ -5,6 +5,10 @@ namespace Core\Support;
 class Validator
 {
 
+    private string $currentInputKey;
+
+    private array $messages = [];
+
     private array $rules = [
         'required' => '/.+/',
         'email' => '/[\w\_.@%]+@[\w\d_.@%]+\.[\w\d]/',
@@ -23,23 +27,24 @@ class Validator
     ];
 
     private array $error_msgs = [
-        'required' => 'The fields are required',
+        'required' => '%s is required',
         'email' => 'Enter a valid email address',
-        'string' => 'Just letters with numbers are allowed',
-        'number' => 'Just numbers are allowed',
-        'digit' => 'Just digits are allowed',
-        'word' => 'Just words are allowed',
+        'string' => '%s can just have letters with numbers',
+        'number' => '%s can just have numbers',
+        'digit' => '%s can just have digits',
+        'word' => '%s can just have words',
         'url' => 'Enter a valid URL',
-        'max' => 'Data musn´t have more than %d characters',
-        'min' => 'Data must have more than %d characters',
-        'fix' => 'Data must have %d characters'
+        'max' => '%s musn´t have more than %d characters',
+        'min' => '%s must have more than %d characters',
+        'fix' => '%s must have %d characters'
     ];
 
-    public function validate(array $data): void
+    public function validate(\Core\Http\Request $request, array $data): void
     {
-        foreach ($data as $value => $rule_name) {
+        foreach ($data as $requestKey => $rule_name) {
             $rule_set = explode('|', $rule_name);
-            array_map(fn ($rule) => $this->performRuleValidation($rule, $value), $rule_set);
+            $this->currentInputKey = $requestKey;
+            array_map(fn ($rule) => $this->performRuleValidation($rule, $request->input($requestKey)), $rule_set);
         }
     }
 
@@ -55,7 +60,7 @@ class Validator
     private function performRuleValidation(string $rule_name, mixed $subject): void
     {
         if (key_exists($rule_name, $this->rules) && !preg_match($this->rules[$rule_name], $subject)) {
-            $this->cancel($this->error_msgs[$rule_name]);
+            $this->cancel(sprintf($this->error_msgs[$rule_name], $this->currentInputKey));
         }
         $this->handleVariableRules($rule_name, $subject);
     }
@@ -68,6 +73,7 @@ class Validator
 
                 sprintf(
                     $this->error_msgs['max'],
+                    $this->currentInputKey,
                     $this->getLimits($rule)
                 )
 
@@ -80,6 +86,7 @@ class Validator
 
                 sprintf(
                     $this->error_msgs['min'],
+                    $this->currentInputKey,
                     $this->getLimits($rule)
                 )
 
@@ -92,6 +99,7 @@ class Validator
 
                 sprintf(
                     $this->error_msgs['fix'],
+                    $this->currentInputKey,
                     $this->getLimits($rule)
                 )
 
@@ -108,7 +116,7 @@ class Validator
     {
         return preg_match(\Core\Support\Formating\Str::regex($search), $subject);
     }
-
+    
     private function cancel($msg): void
     {
         exit((string) new \Core\Http\ResponseComplements\redirectResponse('back', [

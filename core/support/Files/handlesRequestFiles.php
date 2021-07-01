@@ -2,43 +2,26 @@
 
 namespace Core\Support\Files;
 
+use Core\Http\RequestComplements\UploadedFile;
+
 trait HandlesRequestFiles
 {
-     public function hasFiles(): bool
+    public function hasFiles(): bool
     {
         foreach (array_keys($_FILES) as $key) {
             return !empty($_FILES[$key]['name']);
         }
     }
 
-    public function hasFile($key)
+    public function hasFile($key): bool
     {
-        return isset($_FILES[$key]) && ($_FILES[$key]['name']) != null;
+        $file = new UploadedFile($key);
+        return $file->hasContents();
     }
 
     public function file($key)
     {
-        return $_FILES[$key];
-    }
-
-    public function getClientFileName($key)
-    {
-        return $_FILES[$key]['name'];
-    }
-
-    public function getFileType($key)
-    {
-        return $_FILES[$key]['type'];
-    }
-
-    public function getFileSize($key)
-    {
-        return $_FILES[$key]['size'];
-    }
-
-    public function getFileTmpName($key)
-    {
-        return $_FILES[$key]['size'];
+        return new UploadedFile($key);
     }
 
     public function getAllUploadedFiles()

@@ -2,28 +2,26 @@
 
 namespace Core\Support\Files;
 
+use Core\Http\RequestComplements\UploadedFile;
+use Core\FileSystems\Storage;
+use Core\Support\Crypto;
+
 trait handlesUploadedFiles
 {
-    public function imageUploadProccess(string $path, ...$keys): void
+    public function uploadFile(string $requestKey, string $folder): void
     {
-        if ($this->hasFiles()) {
-            foreach ($keys as $files_key) {
-                $filename = \Core\Support\Crypto::cryptoImage($this, $files_key);
-                $this->uploadIfIsImage($files_key, $path, $filename);
-                $this->setInputValue($files_key, $filename);
-            }
-        }
-    }
+        if ($this->hasFile($requestKey)) {
 
-    public function imageUpdateProccess(string $path, array $keys, array $delete_filenames): void
-    {
-        if ($this->hasFiles()) {
-            array_map(fn ($filename) => $this->deleteFile($path, $filename), $delete_filenames);
-            foreach ($keys as $files_key) {
-                $filename = \Core\Support\Crypto::cryptoImage($this, $files_key);
-                $this->uploadIfIsImage($files_key, $path, $filename);
-                $this->setInputValue($files_key, $filename);
-            }
+            $filePath = Crypto::encStamp(
+                $this->file($requestKey)->name()
+            );
+
+            Storage::from($folder)->put(
+                new UploadedFile($requestKey),
+                $filePath
+            );
+
+            $this->setInputValue($requestKey, $filePath);
         }
     }
 }

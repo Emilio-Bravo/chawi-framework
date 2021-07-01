@@ -50,7 +50,7 @@ class Crypto
 
     public static function cryptoImage(\Core\Http\Request $request, $key)
     {
-        return self::cryptoCode() . $request->getClientFileName($key);
+        return self::cryptoCode() . $request->file($key)->name();
     }
 
     public static function generateToken()
@@ -61,6 +61,11 @@ class Crypto
 
     public static function createToken()
     {
-         \Core\Http\Persistent::create('TOKEN', self::generateToken());
+        \Core\Http\Persistent::create('TOKEN', self::generateToken());
+    }
+
+    public static function encStamp(string $str)
+    {
+        return time() . rand(1000000, 9999999) . self::cryptoCryptGenerate() . strtolower($str);
     }
 }

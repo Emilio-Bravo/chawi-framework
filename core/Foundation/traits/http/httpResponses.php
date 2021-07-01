@@ -12,18 +12,14 @@ trait httpResponses
     public function redirect(string $location = '/', int $code = 200): self
     {
         $this->statusCode($code);
-        header("location:$location");
+        $this->setHeader('location', $location);
         return $this;
     }
 
-    public function setHeader(string $header, string $value): void
+    public function setHeader(string $key, string $value): object
     {
-        header("$header: $value");
-    }
-
-    public function setHeaders(string ...$headers): void
-    {
-        array_map(fn ($header) => header($header), $headers);
+        header("$key: $value");
+        return $this;
     }
 
     public static function cancel(): self

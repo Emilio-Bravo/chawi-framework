@@ -42,6 +42,7 @@ class ComposerStaticInit8690bab61c5c73dbf30b1f5c2a28e2cb
     );
 
     public static $classMap = array (
+        'App\\Controllers\\ImageController' => __DIR__ . '/../..' . '/app/controllers/ImageController.php',
         'App\\Controllers\\ProductController' => __DIR__ . '/../..' . '/app/controllers/ProductController.php',
         'App\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/controllers/UserController.php',
         'App\\Models\\Product' => __DIR__ . '/../..' . '/app/models/Product.php',
@@ -76,8 +77,10 @@ class ComposerStaticInit8690bab61c5c73dbf30b1f5c2a28e2cb
         'Core\\Foundation\\Traits\\Http\\canMorphContent' => __DIR__ . '/../..' . '/core/Foundation/traits/http/canMorphContent.php',
         'Core\\Foundation\\Traits\\Http\\httpResponses' => __DIR__ . '/../..' . '/core/Foundation/traits/http/httpResponses.php',
         'Core\\Foundation\\Traits\\Http\\responseMessages' => __DIR__ . '/../..' . '/core/Foundation/traits/http/responseMessagesTrait.php',
+        'Core\\Http\\File' => __DIR__ . '/../..' . '/core/HTTP/File.php',
         'Core\\Http\\Persistent' => __DIR__ . '/../..' . '/core/HTTP/Persistent.php',
         'Core\\Http\\Request' => __DIR__ . '/../..' . '/core/HTTP/Request.php',
+        'Core\\Http\\RequestComplements\\UploadedFile' => __DIR__ . '/../..' . '/core/HTTP/requestComplements/UploadedFile.php',
         'Core\\Http\\RequestComplements\\handlesRequestHeaders' => __DIR__ . '/../..' . '/core/HTTP/requestComplements/handlesRequestHeadersTrait.php',
         'Core\\Http\\Response' => __DIR__ . '/../..' . '/core/HTTP/Response.php',
         'Core\\Http\\ResponseComplements\\redirectResponse' => __DIR__ . '/../..' . '/core/HTTP/responseComplements/redirectResponse.php',
@@ -90,6 +93,7 @@ class ComposerStaticInit8690bab61c5c73dbf30b1f5c2a28e2cb
         'Core\\Support\\Files\\HandlesRequestFiles' => __DIR__ . '/../..' . '/core/support/Files/handlesRequestFiles.php',
         'Core\\Support\\Files\\handlesUploadedFiles' => __DIR__ . '/../..' . '/core/support/Files/handlesUploadedFilesTrait.php',
         'Core\\Support\\Flash' => __DIR__ . '/../..' . '/core/support/Flash.php',
+        'Core\\Support\\Formating\\Carbon' => __DIR__ . '/../..' . '/core/support/formating/Carbon.php',
         'Core\\Support\\Formating\\Str' => __DIR__ . '/../..' . '/core/support/formating/Str.php',
         'Core\\Support\\HttpSanitizer' => __DIR__ . '/../..' . '/core/support/HttpSanitizer.php',
         'Core\\Support\\Validator' => __DIR__ . '/../..' . '/core/support/Validator.php',
