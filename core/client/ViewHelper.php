@@ -2,10 +2,12 @@
 
 namespace Core\Client;
 
+use Core\Http\Server;
+
 class ViewHelper
 {
-    public function url($path)
+    public function url(string $path): string
     {
-        return $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . $path;
+        return Server::host() . Server::uri() . $path;
     }
 }

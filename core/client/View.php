@@ -2,11 +2,13 @@
 
 namespace Core\Client;
 
+use Core\Config\Support\interactsWithViewDependencies;
+
 class View
 {
 
-    private string $view_path = __DIR__ . '/../../app/frontend/views/';
-    private string $layout_path = __DIR__ . '/../../app/frontend/layouts/';
+    use interactsWithViewDependencies;
+
     private array $files = [];
 
     public function render(string $file, array $vars = [])
@@ -21,8 +23,8 @@ class View
         foreach ($vars as $var => $value) {
             $$var = $value;
         }
-        foreach ((array) $this->getViewDependencies() as $helper => $class) {
-            $$helper = $class;
+        foreach ($this->getViewDependencies() as $helper => $class) {
+            $$helper = new $class;
         }
         require_once $path;
         return ob_get_clean();
@@ -38,15 +40,5 @@ class View
         }
 
         return str_ireplace($matches[0], $this->files, $file_content);
-    }
-
-    private function getViewDependencies()
-    {
-        return [
-            '_session' => new \Core\Http\Persistent,
-            '_flash' => new \Core\Support\Flash,
-            '_view' => new \Core\Client\ViewHelper
-        ];
-        //return require_once __DIR__ . '/../../core/config/viewDependencies.php';
     }
 }

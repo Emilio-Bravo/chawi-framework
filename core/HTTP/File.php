@@ -2,13 +2,15 @@
 
 namespace Core\Http;
 
-class File
+class Files
 {
-
-    public static string $storage_path = __DIR__ . '/../../app/storage/public/';
-
-    public static function get(string $path, string $filename): string
+    public static function all()
     {
-        return file_get_contents(self::$storage_path . "$path/$filename");
+        return (object) $_FILES;
+    }
+
+    public static function get($key)
+    {
+        return (object) $_FILES[$key];
     }
 }

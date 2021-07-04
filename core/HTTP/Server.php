@@ -14,6 +14,11 @@ class Server
         return $_SERVER['REQUEST_METHOD'];
     }
 
+    public static function host()
+    {
+        return $_SERVER['HTTP_HOST'];
+    }
+
     public static function uri()
     {
         $path = $_SERVER['REQUEST_URI'];
@@ -24,6 +29,6 @@ class Server
 
     public static function server()
     {
-        return $_SERVER;
+        return (object) $_SERVER;
     }
 }

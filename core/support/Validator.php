@@ -2,103 +2,73 @@
 
 namespace Core\Support;
 
+use Core\Config\Support\interactsWithValidatorConfig;
+use Core\Support\Formating\MsgParser;
+
 class Validator
 {
 
+    use interactsWithValidatorConfig;
+
     private string $currentInputKey;
+    private string $currentSubject;
+    private string $currentRule;
+    private object $config;
 
-    private array $messages = [];
-
-    private array $rules = [
-        'required' => '/.+/',
-        'email' => '/[\w\_.@%]+@[\w\d_.@%]+\.[\w\d]/',
-        'string' => '/[A-z]+[0-9]*/',
-        'number' => '/[0-9]/',
-        'digit' => '/\d/',
-        'word' => '/\w/',
-        'url' => '/^(http|https)+:\/\/+([\w\S\d])+\.([\w\d])+?([a-z])+$/',
-        'letters' => '/[A-z]/'
-    ];
-
-    private array $counting_rules = [
-        'min' => 'min:[0-9]+',
-        'max' => 'max:[0-9]+',
-        'fix' => 'fix:[0-9]+'
-    ];
-
-    private array $error_msgs = [
-        'required' => '%s is required',
-        'email' => 'Enter a valid email address',
-        'string' => '%s can just have letters with numbers',
-        'number' => '%s can just have numbers',
-        'digit' => '%s can just have digits',
-        'word' => '%s can just have words',
-        'url' => 'Enter a valid URL',
-        'max' => '%s musn´t have more than %d characters',
-        'min' => '%s must have more than %d characters',
-        'fix' => '%s must have %d characters'
-    ];
+    public function __construct()
+    {
+        $this->config = $this->getValidatorConfig();
+    }
 
     public function validate(\Core\Http\Request $request, array $data): void
     {
+
         foreach ($data as $requestKey => $rule_name) {
+
             $rule_set = explode('|', $rule_name);
+
             $this->currentInputKey = $requestKey;
-            array_map(fn ($rule) => $this->performRuleValidation($rule, $request->input($requestKey)), $rule_set);
+
+            foreach ($rule_set as $rule) {
+                $this->currentRule = $rule;
+                $this->performRuleValidation($request->input($requestKey));
+            }
         }
     }
 
-    private function handleVariableRules(string $rule, string $subject)
+    private function handleVariableRules(): void
     {
-        $rule_set = \Core\Support\Formating\Str::regex(implode('|', $this->counting_rules));
+        $rule_set = \Core\Support\Formating\Str::regex(implode('|', (array) $this->config->counting_rules));
 
-        if (preg_match($rule_set, $rule)) {
-            $this->performCountingRuleValidation($rule, $subject);
+        if (preg_match($rule_set, $this->currentRule)) {
+            $this->performCountingRuleValidation($this->currentSubject);
         }
     }
 
-    private function performRuleValidation(string $rule_name, mixed $subject): void
+    private function performRuleValidation(mixed $subject): void
     {
-        if (key_exists($rule_name, $this->rules) && !preg_match($this->rules[$rule_name], $subject)) {
-            $this->cancel(sprintf($this->error_msgs[$rule_name], $this->currentInputKey));
+        $this->currentSubject = $subject;
+
+        if (key_exists($this->currentRule, $this->config->rules) && !preg_match($this->config->rules[$this->currentRule], $this->currentSubject)) {
+            $this->cancel(MsgParser::format($this->config->error_msgs[$this->currentRule], $this->currentInputKey));
         }
-        $this->handleVariableRules($rule_name, $subject);
+
+        $this->handleVariableRules();
     }
 
-    private function performCountingRuleValidation(string $rule, string $subject): void
+    private function performCountingRuleValidation(): void
     {
-        if ($this->match($rule, 'max:')) {
 
-            strlen($subject) < $this->getLimits($rule) ?: $this->cancel(
+        $rule = preg_split('/[0-9\W]/', $this->currentRule)[0];
 
-                sprintf(
-                    $this->error_msgs['max'],
-                    $this->currentInputKey,
-                    $this->getLimits($rule)
-                )
+        $this->setCountingRules();
 
-            );
-        }
+        if (key_exists($rule, $this->config->counting_rules)) {
 
-        if ($this->match($rule, 'min:')) {
+            $this->config->counting_rules[$rule] ?: $this->cancel(
 
-            strlen($subject) > $this->getLimits($rule) ?: $this->cancel(
-
-                sprintf(
-                    $this->error_msgs['min'],
-                    $this->currentInputKey,
-                    $this->getLimits($rule)
-                )
-
-            );
-        }
-
-        if ($this->match($rule, 'fix:')) {
-
-            strlen($subject) == $this->getLimits($rule) ?: $this->cancel(
-
-                sprintf(
-                    $this->error_msgs['fix'],
+                MsgParser::format(
+                    $this->config->error_msgs[$rule],
                     $this->currentInputKey,
                     $this->getLimits($rule)
                 )
@@ -107,20 +77,23 @@ class Validator
         }
     }
 
-    private function getLimits($rule): int
+    private function setCountingRules(): void
     {
-        return explode(':', $rule)[1];
+        $this->config->counting_rules['min'] = strlen($this->currentSubject) > $this->getLimits();
+        $this->config->counting_rules['max'] = strlen($this->currentSubject) < $this->getLimits();
+        $this->config->counting_rules['fix'] = strlen($this->currentSubject) == $this->getLimits();
     }
 
-    private function match(string $subject, string $search): bool
+    private function getLimits(): int
     {
-        return preg_match(\Core\Support\Formating\Str::regex($search), $subject);
+        return (int) explode(':', $this->currentRule)[1];
     }
-    
+
     private function cancel($msg): void
     {
-        exit((string) new \Core\Http\ResponseComplements\redirectResponse('back', [
-            'error' => $msg
-        ]));
+        exit(new \Core\Http\ResponseComplements\redirectResponse(
+            'back',
+            ['error' => $msg]
+        ));
     }
 }

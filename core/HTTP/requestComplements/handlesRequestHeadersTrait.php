@@ -15,7 +15,7 @@ trait handlesRequestHeaders
         return (object) $expected;
     }
 
-    public function getHeader(string $header_name)
+    public function header(string $header_name)
     {
         return $this->request_headers->$header_name ?? null;
     }

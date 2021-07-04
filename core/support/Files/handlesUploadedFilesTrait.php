@@ -16,7 +16,7 @@ trait handlesUploadedFiles
                 $this->file($requestKey)->name()
             );
 
-            Storage::from($folder)->put(
+            Storage::in($folder)->put(
                 new UploadedFile($requestKey),
                 $filePath
             );

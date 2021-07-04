@@ -38,7 +38,7 @@ trait HandlesImages
 
     public function upload(UploadedFile $file, string $to, string $path): void
     {
-        Storage::from($to)->put(
+        Storage::in($to)->put(
             $file,
             $path
         );
@@ -51,12 +51,12 @@ trait HandlesImages
 
     public function deleteFile(string $path, string $filename): void
     {
-        Storage::from($path)->delete($filename);
+        Storage::in($path)->delete($filename);
     }
 
     public function getFile($path, string $filename): string
     {
-        return Storage::from($path)->get($filename);
+        return Storage::in($path)->get($filename);
     }
 
     private function buildImageMimeTypes(): void

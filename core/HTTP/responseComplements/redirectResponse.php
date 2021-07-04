@@ -24,7 +24,7 @@ class redirectResponse
 
     public function __destruct()
     {
-        return $this->redirect($this->location, $this->code)->with(
+        return (string) $this->redirect($this->location, $this->code)->with(
             key($this->message),
             array_values($this->message)[0]
         );

@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * Do not change array keys, 
+ * unless youre shure that your 
+ * application is using the same keys!
+ */
+
 return [
-    '_session' => new \Core\Http\Persistent,
-    '_flash' => new \Core\Support\Flash,
-    '_view' => new \Core\Client\ViewHelper
+    '_session' => \Core\Http\Persistent::class,
+    '_flash' => \Core\Support\Flash::class,
+    '_view' => \Core\Client\ViewHelper::class
 ];
