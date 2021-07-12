@@ -2,37 +2,39 @@
 
 namespace Core\Foundation;
 
+use Core\Http\Response;
+use Core\Client\View;
+
 class Controller
 {
-
-    protected \Core\Client\View $view;
-    protected \Core\Http\Response $response;
+    protected View $view;
+    protected Response $response;
 
     public function __construct()
     {
-        $this->view = new \Core\Client\View;
-        $this->response = new \Core\Http\Response;
+        $this->view = new View;
+        $this->response = new Response;
     }
 
     protected function render($view, array $vars = [], $code = 200): void
     {
-        new \Core\Http\Response($this->view->render($view, $vars), $code);
+        new Response($this->view->render($view, $vars), $code);
         \Core\Support\Flash::enable(); //Enbale flash sessions
     }
 
-    protected function redirect(string $location = '/'): \Core\Http\Response
+    protected function redirect(string $location = '/'): Response
     {
         return $this->response->redirect($location);
     }
 
-    protected function back(): \Core\Http\Response
+    protected function back(): Response
     {
         return $this->redirect(\Core\Http\Server::referer());
     }
 
-    protected function validate(\Core\Http\Request $request, array $data_patern): void
+    protected function validate(\Core\Http\Request $request, array $data_patern): \Core\Support\Validator
     {
         $validator = new \Core\Support\Validator;
-        $validator->validate($request, $data_patern);
+        return $validator->validate($request, $data_patern);
     }
 }

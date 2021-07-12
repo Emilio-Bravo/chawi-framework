@@ -11,7 +11,6 @@ class Flash
 
     public static function create($key, $value)
     {
-        Persistent::init();
         self::$session_key = $key;
         Persistent::create($key, $value);
         self::change_status();
@@ -25,7 +24,9 @@ class Flash
     public static function enable()
     {
         foreach ($_SESSION as $key => $session) {
+            
             $target = str_replace('_quit', '', $key);
+            
             if (preg_match('/_quit/', $key) && Persistent::get($target) != null) {
                 Persistent::destroy($target);
                 Persistent::destroy($key);

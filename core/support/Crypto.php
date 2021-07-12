@@ -55,8 +55,7 @@ class Crypto
 
     public static function generateToken()
     {
-        openssl_random_pseudo_bytes(self::CRYPTO_LENGTH, $binary_token);
-        return bin2hex($binary_token);
+        return md5(uniqid(mt_rand(), true));
     }
 
     public static function createToken()

@@ -31,4 +31,9 @@ class Server
     {
         return (object) $_SERVER;
     }
+
+    public static function get(string $key)
+    {
+        if (in_array($key, $_SERVER)) return $_SERVER[$key];
+    }
 }

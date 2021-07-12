@@ -15,8 +15,8 @@ trait canMorphContent
         return is_array($content);
     }
 
-    protected function morphToJson(array &$content): void
+    protected function morphToJson(array $content): string|false
     {
-        $content = json_encode($content);
+        return json_encode($content);
     }
 }

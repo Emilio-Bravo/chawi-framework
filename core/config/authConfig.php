@@ -15,6 +15,12 @@ return [
     'auth_keys' => [
         'user' => 'email',
         'password' => 'password'
-    ]
+    ],
 
+    'cookie' => [
+        'name' => 'user_session',
+        'value' => \Core\Support\Crypto::generateToken(),
+        'path' => '/',
+        'expires' => 3600 //one hour
+    ]
 ];

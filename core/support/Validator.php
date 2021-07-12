@@ -13,6 +13,10 @@ class Validator
     private string $currentInputKey;
     private string $currentSubject;
     private string $currentRule;
+    private ?string $currentError = null;
+
+    private bool $isJson = false;
+
     private object $config;
 
     public function __construct()
@@ -20,7 +24,24 @@ class Validator
         $this->config = $this->getValidatorConfig();
     }
 
-    public function validate(\Core\Http\Request $request, array $data): void
+    public function __destruct()
+    {
+        if ($this->isJson && !is_null($this->currentError)) $this->customCancel(
+
+            new \Core\Http\Response(
+                [
+                    'status' => 'error',
+                    'message' => $this->currentError
+                ],
+                500
+            )
+
+        );
+
+        if (!is_null($this->currentError)) $this->cancel($this->currentError);
+    }
+
+    public function validate(\Core\Http\Request $request, array $data): self
     {
 
         foreach ($data as $requestKey => $rule_name) {
@@ -34,6 +55,8 @@ class Validator
                 $this->performRuleValidation($request->input($requestKey));
             }
         }
+
+        return $this;
     }
 
     private function handleVariableRules(): void
@@ -50,7 +73,7 @@ class Validator
         $this->currentSubject = $subject;
 
         if (key_exists($this->currentRule, $this->config->rules) && !preg_match($this->config->rules[$this->currentRule], $this->currentSubject)) {
-            $this->cancel(MsgParser::format($this->config->error_msgs[$this->currentRule], $this->currentInputKey));
+            $this->setError(MsgParser::format($this->config->error_msgs[$this->currentRule], $this->currentInputKey));
         }
 
         $this->handleVariableRules();
@@ -65,7 +88,7 @@ class Validator
 
         if (key_exists($rule, $this->config->counting_rules)) {
 
-            $this->config->counting_rules[$rule] ?: $this->cancel(
+            $this->config->counting_rules[$rule] ?: $this->setError(
 
                 MsgParser::format(
                     $this->config->error_msgs[$rule],
@@ -86,14 +109,33 @@ class Validator
 
     private function getLimits(): int
     {
-        return (int) explode(':', $this->currentRule)[1];
+        return (int) @explode(':', $this->currentRule)[1];
     }
 
     private function cancel($msg): void
     {
-        exit(new \Core\Http\ResponseComplements\redirectResponse(
+        new \Core\Http\ResponseComplements\redirectResponse(
             'back',
-            ['error' => $msg]
-        ));
+            ['error' => $msg],
+            500
+        );
+
+        exit;
+    }
+
+    private function customCancel($content): void
+    {
+        $content;
+        exit;
+    }
+
+    private function setError(string $error): void
+    {
+        if (is_null($this->currentError)) $this->currentError = $error;
+    }
+
+    public function asResponse()
+    {
+        $this->isJson = true;
     }
 }

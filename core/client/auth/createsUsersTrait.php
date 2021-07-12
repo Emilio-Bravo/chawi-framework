@@ -30,6 +30,7 @@ trait createsUsers
                     )
                 ]
             );
+            
         }
     }
 

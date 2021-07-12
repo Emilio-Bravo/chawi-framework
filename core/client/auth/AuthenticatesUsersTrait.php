@@ -2,6 +2,7 @@
 
 namespace Core\Client\Authentification;
 
+use Core\Http\Cookie;
 use Core\Http\Persistent;
 use Core\Http\ResponseComplements\redirectResponse;
 use Core\Support\Formating\MsgParser;
@@ -15,7 +16,20 @@ trait AuthenticatesUsers
 
         if (is_object($user) && password_verify($password, $user->password)) {
             $this->setSession($user);
-            return $this->onSuccess($user->name);
+
+            return $this->onSuccess($user->name)->withCookie(
+
+                new Cookie(
+                    $this->config->cookie['name'],
+                    $this->config->cookie['value'],
+                    time() + $this->config->cookie['expires'],
+                    $this->config->cookie['path'],
+                    null,
+                    false,
+                    true
+                )
+
+            );
         }
 
         return $this->onError();
@@ -29,6 +43,7 @@ trait AuthenticatesUsers
     public function logout()
     {
         Persistent::destroy($this->config->session['key']);
+        Cookie::remove($this->config->cookie['name']);
         return new redirectResponse('/');
     }
 

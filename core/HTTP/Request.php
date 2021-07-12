@@ -26,7 +26,7 @@ class Request
 
     private function sanitizeRequest(): void
     {
-        switch (\Core\Http\Server::method()) {
+        switch (Server::method()) {
             case 'GET':
                 $this->input = \Core\Support\HttpSanitizer::sanitize_get();
                 break;
@@ -57,5 +57,10 @@ class Request
     public function setInputValue(string $input, $value): void
     {
         $this->input[$input] = $value;
+    }
+
+    public function getMtehod(): string
+    {
+        return Server::method();
     }
 }

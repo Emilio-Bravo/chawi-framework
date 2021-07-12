@@ -3,7 +3,9 @@
 namespace Core\FileSystems;
 
 use Core\Config\Support\interactsWithPathSettings;
+use Core\Http\Complements\StoredFile;
 use Core\Http\RequestComplements\UploadedFile;
+use Core\Http\Response;
 
 class Storage
 {
@@ -12,6 +14,7 @@ class Storage
 
     /**
      * The current folder to work with
+     * @var string
      */
     public string $currentFolder;
 
@@ -21,13 +24,13 @@ class Storage
     }
 
     /**
-     * Returns the raw content of a file
+     * Returns an object which represents an stored file
      * @param string $filename
-     * @return string
+     * @return object
      */
-    public function get(string $filename): string
+    public function get(string $filename): StoredFile
     {
-        return file_get_contents("{$this->storage_path}{$this->currentFolder}/$filename");
+        return new StoredFile("$this->storage_path/$this->currentFolder", $filename);
     }
 
     /**
@@ -51,6 +54,52 @@ class Storage
         if ($file instanceof UploadedFile) {
             move_uploaded_file($file->tmpName(), "{$this->storage_path}{$this->currentFolder}/$path");
         }
+    }
+
+    /**
+     * Determines wheter a file exists or not
+     * @param string|UploadedFile $filename the file to search
+     * @return bool
+     */
+    public function has(string|UploadedFile $filename): bool
+    {
+        if ($filename instanceof UploadedFile) $filename = $filename->name();
+
+        return !\is_dir("$this->storage_path/$this->currentFolder/$filename");
+    }
+
+    /**
+     * Moves an existing file to the specified destination storage folder
+     * @param string $filename the file to move
+     * @param string $destination_folder the destination storage folder
+     * @return bool
+     */
+    public function move(string $filename, string $destination_folder): bool
+    {
+        return rename(
+            "$this->storage_path/$this->currentFolder/$filename",
+            "$this->storage_path/$destination_folder/$filename"
+        );
+    }
+
+    /**
+     * Returns a file download response
+     * @return Core\Http\Response
+     */
+    public function download(string $filename): Response
+    {
+        return new Response(
+            new StoredFile("$this->storage_path/$this->currentFolder", $filename),
+            200,
+            [
+                'Pragma' => 'public',
+                'Exipres' => 0,
+                'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+                'Cache-Control' => 'private',
+                'Content-Disposition' => 'attachment; filename="' . basename($filename) . '";',
+                'Content-Transfer-Encoding' => 'binary',
+            ]
+        );
     }
 
     /**

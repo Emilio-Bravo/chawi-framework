@@ -4,7 +4,8 @@ namespace Core\Foundation\Traits\Http;
 
 trait httpResponses
 {
-    protected function statusCode(int $code): void
+
+    public function statusCode(int $code): void
     {
         http_response_code($code);
     }
@@ -16,15 +17,20 @@ trait httpResponses
         return $this;
     }
 
-    public function setHeader(string $key, string $value): object
+    public function setHeader(string $key, string $value, bool $replace = true, int $code = 200): self
     {
-        header("$key: $value");
+        header("$key: $value", $replace);
         return $this;
     }
 
-    public static function cancel(): self
+    public function removeHeader(string $key): self
     {
-        header('location:' . \Core\Http\Server::referer());
-        return new static;
+        header_remove($key);
+        return $this;
+    }
+
+    public function addCookie(\Core\Http\Cookie $cookie)
+    {
+        $this->setHeader('Set-Cookie', $cookie, false);
     }
 }

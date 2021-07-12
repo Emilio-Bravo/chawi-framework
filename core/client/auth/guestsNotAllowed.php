@@ -3,6 +3,9 @@
 namespace Core\Client\Authentification;
 
 use Core\Config\Support\interactsWithAuthConfig;
+use Core\Http\Cookie;
+use Core\Http\Persistent;
+use Exception;
 
 /**
  * User will be redirected to a custom location if provided
@@ -26,13 +29,26 @@ trait guestsNotAllowed
 
     private function mustBeAuthenticated(): void
     {
-        if (!\Core\Http\Persistent::get($this->config->session['key'])) {
 
-            exit(new \Core\Http\ResponseComplements\redirectResponse(
-                $this->redirectGuestTo ?? '/user/login',
-                ['error' => 'You need to be identified']
-            ));
+        $this->evaluateCookieExpiration();
+
+        if (!Persistent::get($this->config->session['key'])) {
             
+            new \Core\Http\ResponseComplements\redirectResponse(
+                $this->redirectGuestTo ?? '/user/login',
+                ['error' => 'You need to be identified'],
+                500
+            );
+
+            exit;
+
+        }
+    }
+
+    private function evaluateCookieExpiration(): void
+    {
+        if (!Cookie::has($this->config->cookie['name'])) {
+            Persistent::destroy($this->config->session['key']);
         }
     }
 }

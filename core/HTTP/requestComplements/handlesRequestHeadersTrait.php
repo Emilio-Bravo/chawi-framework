@@ -10,7 +10,7 @@ trait handlesRequestHeaders
     public function getHttpHeaders(): object
     {
         foreach ($this->request_headers as $key => $value) {
-            !preg_match('/http/', $key) ?: $expected[$key] = $value;
+            !preg_match('/HTTP/', $key) ?: $expected[$key] = $value;
         }
         return (object) $expected;
     }
@@ -22,7 +22,7 @@ trait handlesRequestHeaders
 
     public function getHttpHeader(string $header_name)
     {
-        return $this->request_headers->{"http_$header_name"} ?? null;
+        return $this->request_headers->{"HTTP_$header_name"} ?? null;
     }
 
     public function hasHeader(string $header_name): bool
@@ -33,7 +33,7 @@ trait handlesRequestHeaders
     private function parseRequestHeaders(): void
     {
         foreach (\Core\Http\Server::server() as $key => $value) {
-            $sanitized_key = strtolower(preg_replace('/[-]/', '_', $key));
+            $sanitized_key = preg_replace('/[-]/', '_', $key);
             $this->request_headers[$sanitized_key] = $value;
         }
         $this->request_headers = (object) $this->request_headers;
