@@ -1,7 +1,7 @@
 <?php
 
 return [
-    
+
     'rules' => [
         'required' => '/.+/',
         'email' => '/[\w\_.@%]+@[\w\d_.@%]+\.[\w\d]/',
@@ -31,6 +31,11 @@ return [
         'max' => ':input musn´t have more than :amount characters',
         'min' => ':input must have more than :amount characters',
         'fix' => ':input must have :amount characters'
-    ]
+    ],
+
+    'error_template' =>
+        '<span class="text-danger" role="alert">
+            <strong>:message!</strong>
+        </span>'
 
 ];

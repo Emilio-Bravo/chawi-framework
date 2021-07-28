@@ -2,8 +2,6 @@
 
 namespace Core\Http\Complements;
 
-use Core\Http\Response;
-
 /**
  * Represents an stored file
  */
@@ -12,16 +10,21 @@ class StoredFile
 
     /**
      * The current file name
+     * 
+     * @var string 
      */
     private string $filename;
 
     /**
      * The path of the current file
+     * 
+     * @var string
      */
     private string $path;
 
     /**
      * Sets the file data
+     * 
      * @param string $path
      * @param string $filename
      * @return void
@@ -34,6 +37,7 @@ class StoredFile
 
     /**
      * Returns the content of the current file
+     * 
      * @return string
      */
     public function __toString(): string
@@ -42,7 +46,18 @@ class StoredFile
     }
 
     /**
+     * Get the name of the current file
+     * 
+     * @return string
+     */
+    public function name(): string
+    {
+        return $this->filename;
+    }
+
+    /**
      * Returns the mimetype of the current file
+     * 
      * @return string
      */
     public function type(): string
@@ -52,6 +67,7 @@ class StoredFile
 
     /**
      * Returns the size of the current file
+     * 
      * @return int
      */
     public function size(): int
@@ -61,6 +77,7 @@ class StoredFile
 
     /**
      * Renames the current file
+     * 
      * @param string $newname the new name
      * @return void
      */
@@ -71,6 +88,7 @@ class StoredFile
 
     /**
      * Makes a copy of the current file
+     * 
      * @param string $filename the new file name
      * @return void
      */
@@ -80,22 +98,21 @@ class StoredFile
     }
 
     /**
-     * Returns a file download response
-     * @return Core\Http\Response
+     * Get the path of the current file
+     * 
+     * @return string
      */
-    public function download(): Response
+    public function path(): string
     {
-        return new Response(
-            $this,
-            200,
-            [
-                'Pragma' => 'public',
-                'Exipres' => 0,
-                'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
-                'Cache-Control' => 'private',
-                'Content-Disposition' => 'attachment; filename="' . basename($this->filename) . '";',
-                'Content-Transfer-Encoding' => 'binary',
-            ]
-        );
+        return "$this->path/$this->filename";
+    }
+    /**
+     * Returns a file download response
+     * 
+     * @return Core\Http\Complements\DownloadResponse 
+     */
+    public function download(): DonwloadResponse
+    {
+        return new DonwloadResponse($this);
     }
 }

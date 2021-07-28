@@ -3,9 +3,9 @@
 namespace Core\FileSystems;
 
 use Core\Config\Support\interactsWithPathSettings;
+use Core\Http\Complements\DonwloadResponse;
 use Core\Http\Complements\StoredFile;
 use Core\Http\RequestComplements\UploadedFile;
-use Core\Http\Response;
 
 class Storage
 {
@@ -14,6 +14,7 @@ class Storage
 
     /**
      * The current folder to work with
+     * 
      * @var string
      */
     public string $currentFolder;
@@ -25,6 +26,7 @@ class Storage
 
     /**
      * Returns an object which represents an stored file
+     * 
      * @param string $filename
      * @return object
      */
@@ -35,6 +37,7 @@ class Storage
 
     /**
      * Unlinks the specified path
+     * 
      * @param string $filename
      * @return void
      */
@@ -45,6 +48,7 @@ class Storage
 
     /**
      * Uploads a file to the specified path
+     * 
      * @param UploadedFile $file
      * @param string $path
      * @return void
@@ -58,6 +62,7 @@ class Storage
 
     /**
      * Determines wheter a file exists or not
+     * 
      * @param string|UploadedFile $filename the file to search
      * @return bool
      */
@@ -70,6 +75,7 @@ class Storage
 
     /**
      * Moves an existing file to the specified destination storage folder
+     * 
      * @param string $filename the file to move
      * @param string $destination_folder the destination storage folder
      * @return bool
@@ -84,31 +90,50 @@ class Storage
 
     /**
      * Returns a file download response
-     * @return Core\Http\Response
+     * 
+     * @return Core\Http\Complements\DownloadResponse
      */
-    public function download(string $filename): Response
+    public function download(string $filename): DonwloadResponse
     {
-        return new Response(
+        return new DonwloadResponse(
             new StoredFile("$this->storage_path/$this->currentFolder", $filename),
-            200,
-            [
-                'Pragma' => 'public',
-                'Exipres' => 0,
-                'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
-                'Cache-Control' => 'private',
-                'Content-Disposition' => 'attachment; filename="' . basename($filename) . '";',
-                'Content-Transfer-Encoding' => 'binary',
-            ]
+            200
         );
     }
 
     /**
+     * Creates a new storage folder and intance
+     * 
+     * @param string $folder
+     * @return self|false
+     */
+    public static function create(string $folder): self|false
+    {
+        $currentFolder = self::getInstance()->storage_path . DIRECTORY_SEPARATOR . $folder;
+
+        if (!\is_dir($currentFolder)) mkdir($currentFolder);
+
+        return \is_dir($currentFolder) ? new self($folder) : false;
+    }
+
+    /**
      * Sets the current folder
+     * 
      * @param string $folder
      * @return object
      */
     public static function in(string $folder): self
     {
         return (new self($folder));
+    }
+
+    /**
+     * Returns a new Storage instance
+     * 
+     * @return self
+     */
+    private static function getInstance()
+    {
+        return new self('');
     }
 }

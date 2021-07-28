@@ -3,6 +3,7 @@
 namespace Core\Client\Authentification;
 
 use Core\Config\Support\interactsWithAuthConfig;
+use Core\Http\Persistent;
 
 class Auth
 {
@@ -18,8 +19,13 @@ class Auth
         $this->config = $this->getAuthConfig();
     }
 
-    public static function user()
+    public static function user(): object
     {
-        return (object) \Core\Http\Persistent::get('user');
+        return (object) Persistent::get('user');
+    }
+
+    public static function isAuthenticated(): bool
+    {
+        return Persistent::has('user');
     }
 }

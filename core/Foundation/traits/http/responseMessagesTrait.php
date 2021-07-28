@@ -9,19 +9,19 @@ trait responseMessages
 {
     public function withSuccess(string $message): self
     {
-        Flash::create('success', $message);
+        Flash::init()->create('success', $message);
         return $this;
     }
 
     public function withError(string $message): self
     {
-        Flash::create('error', $message);
+        Flash::init()->create('error', $message);
         return $this;
     }
 
     public function with(string $key, $value): self
     {
-        Flash::create($key, $value);
+        Flash::init()->create($key, $value);
         return $this;
     }
 

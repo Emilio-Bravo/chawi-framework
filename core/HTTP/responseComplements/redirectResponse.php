@@ -5,6 +5,7 @@ namespace Core\Http\ResponseComplements;
 
 use Core\Foundation\Traits\Http\httpResponses;
 use Core\Foundation\Traits\Http\responseMessages;
+use Core\Http\Server;
 
 class redirectResponse
 {
@@ -33,7 +34,7 @@ class redirectResponse
 
     public function proccessLocation(): void
     {
-        if ($this->location === 'back') $this->location = \Core\Http\Server::referer();
+        if ($this->location === 'back') $this->location = Server::referer();
     }
 }
 

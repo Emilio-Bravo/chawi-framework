@@ -4,6 +4,7 @@ namespace Core\Foundation;
 
 use Core\Http\Response;
 use Core\Client\View;
+use Core\Support\Validation\Validator;
 
 class Controller
 {
@@ -16,10 +17,11 @@ class Controller
         $this->response = new Response;
     }
 
-    protected function render($view, array $vars = [], $code = 200): void
+    protected function render($view, array $vars = [], $code = 200, array $headers = []): void
     {
-        new Response($this->view->render($view, $vars), $code);
-        \Core\Support\Flash::enable(); //Enbale flash sessions
+        new Response($this->view->render($view, $vars), $code, $headers);
+
+        \Core\Support\Flash::init()->enable(); //Enbale flash sessions
     }
 
     protected function redirect(string $location = '/'): Response
@@ -32,9 +34,9 @@ class Controller
         return $this->redirect(\Core\Http\Server::referer());
     }
 
-    protected function validate(\Core\Http\Request $request, array $data_patern): \Core\Support\Validator
+    protected function validate(\Core\Http\Request $request, array $data_patern): Validator
     {
-        $validator = new \Core\Support\Validator;
+        $validator = new Validator;
         return $validator->validate($request, $data_patern);
     }
 }

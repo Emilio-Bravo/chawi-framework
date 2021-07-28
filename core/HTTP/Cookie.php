@@ -2,39 +2,106 @@
 
 namespace Core\Http;
 
-use Core\Http\Complements\BaseCookie;
+use Core\Contracts\Http\CookieContract;
+use Core\Http\Complements\AbstractCookie;
 
-class Cookie extends BaseCookie //https://developer.mozilla.org/es/docs/Web/HTTP/Cookies
+/**
+ * Create a Cookie
+ * 
+ * @see https://developer.mozilla.org/es/docs/Web/HTTP/Cookies
+ */
+class Cookie extends AbstractCookie implements CookieContract
 {
+    /**
+     * Cookie name
+     * 
+     * @var string
+     */
+    protected string $name;
 
-    public string $name;
+    /**
+     * Cookie value
+     * 
+     * @var string
+     */
     protected ?string $value;
+
+    /**
+     * Cookie supported path
+     * 
+     * @var string
+     */
     protected string $path;
+
+    /**
+     * Cookie supported domain
+     * 
+     * @var string
+     */
     protected ?string $domain;
+
+    /**
+     * Cookie samesite
+     * 
+     * @var string
+     */
     protected ?string $sameSite;
 
+    /**
+     * Wheter cookie is secure or not
+     * 
+     * @var bool
+     */
     protected bool $secure;
+
+    /**
+     * Wheter the cookie only should sent to the server
+     * 
+     * @var bool
+     */
     protected bool $httpOnly;
+
+    /**
+     * Wheter cookie should be sent without url encoding
+     * 
+     * @var bool
+     */
     protected bool $raw;
 
-    protected $expire;
+    /**
+     * Cookie expiration time
+     * 
+     * @var int
+     */
+    protected int $expire;
 
+    /**
+     * Cookie samesite terms
+     * 
+     * @var array
+     */
+    private array $sameSiteTerms = [
+        'lax',
+        'strict',
+        'none'
+    ];
+
+    /**
+     * Cookie reserverd chars
+     */
     private const RESERVED_CHARS = [
         '=', ',', ';',
         ' ', "\t", "\r",
         "\n", "\v", "\f"
     ];
 
+    /**
+     * Cookie reserved chars replacement
+     */
     private const RESERVED_CHARS_REPLACEMENT = [
         '%3D', '%2C', '%3B',
         '%20', '%09', '%0D',
         '%0A', '%0B', '%0C'
-    ];
-
-    private array $sameSiteTerms = [
-        'lax',
-        'strict',
-        'none'
     ];
 
     /**
@@ -61,6 +128,11 @@ class Cookie extends BaseCookie //https://developer.mozilla.org/es/docs/Web/HTTP
         $this->sameSite = $sameSite;
     }
 
+    /**
+     * Returns the complete cookie format
+     * 
+     * @return string
+     */
     public function __toString(): string
     {
         if ($this->raw) $cookie = $this->name;
@@ -83,6 +155,12 @@ class Cookie extends BaseCookie //https://developer.mozilla.org/es/docs/Web/HTTP
         return $cookie;
     }
 
+    /**
+     * Sets the optional details of the cookie
+     * 
+     * @param string $str
+     * @return void
+     */
     protected function setOptionalDetails(string &$str): void
     {
 
@@ -97,7 +175,13 @@ class Cookie extends BaseCookie //https://developer.mozilla.org/es/docs/Web/HTTP
         $this->evaluateSameSite($str);
     }
 
-    protected function expiresTimeStamp($expire = 0): int
+    /**
+     * Get the cookie expires time stamp
+     * 
+     * @param int expire
+     * @return int
+     */
+    protected function expiresTimeStamp(int $expire = 0): int
     {
         if ($expire instanceof \DateTimeInterface) $expire = $expire->format('U');
 
@@ -106,6 +190,11 @@ class Cookie extends BaseCookie //https://developer.mozilla.org/es/docs/Web/HTTP
         return $expire > 0 && false !== $expire ? (int) $expire : 0;
     }
 
+    /**
+     * Get the cookie max age
+     * 
+     * @return int
+     */
     protected function getMaxAge(): int
     {
         $maxAge = $this->expire - time();
@@ -113,6 +202,13 @@ class Cookie extends BaseCookie //https://developer.mozilla.org/es/docs/Web/HTTP
         return 0 >= $maxAge ? 0 : $maxAge;
     }
 
+
+    /**
+     * Evauluates the cookie samesite terms
+     * 
+     * @param string $str
+     * @return void
+     */
     protected function evaluateSameSite(&$str): void
     {
         if (in_array($this->sameSite, $this->sameSiteTerms)) {
@@ -123,5 +219,95 @@ class Cookie extends BaseCookie //https://developer.mozilla.org/es/docs/Web/HTTP
                 $str .= '; secure';
             }
         }
+    }
+
+    /**
+     * Get cookie name
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Get cookie value
+     *
+     * @return string
+     */
+    public function getValue(): string
+    {
+        return $this->value;
+    }
+
+    /**
+     * Get cookie supported path
+     *
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    /**
+     * Get cookie supported domain
+     *
+     * @return string
+     */
+    public function getDomain(): string
+    {
+        return $this->domain;
+    }
+
+    /**
+     * Get cookie samesite
+     *
+     * @return string
+     */
+    public function getSameSite(): string
+    {
+        return $this->sameSite;
+    }
+
+    /**
+     * Get wheter cookie is secure or not
+     *
+     * @return bool
+     */
+    public function getSecure(): bool
+    {
+        return $this->secure;
+    }
+
+    /**
+     * Get wheter the cookie only should sent to the server
+     *
+     * @return bool
+     */
+    public function getHttpOnly(): bool
+    {
+        return $this->httpOnly;
+    }
+
+    /**
+     * Get wheter cookie should be sent without url encoding
+     *
+     * @return bool
+     */
+    public function getRaw(): bool
+    {
+        return $this->raw;
+    }
+
+    /**
+     * Get cookie expiration time
+     *
+     * @return int
+     */
+    public function getExpire(): int
+    {
+        return $this->expire;
     }
 }

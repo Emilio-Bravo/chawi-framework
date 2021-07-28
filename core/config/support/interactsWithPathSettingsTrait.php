@@ -7,6 +7,7 @@ trait interactsWithPathSettings
 
     /**
      * Will try to find the specified property in the paths array
+     * 
      * @param string $key
      * @return mixed
      */
@@ -17,6 +18,7 @@ trait interactsWithPathSettings
 
     /**
      * If the key exists will return the content of it
+     * 
      * @param string $key
      * @return mixed
      */
@@ -29,9 +31,10 @@ trait interactsWithPathSettings
 
     /**
      * Returns an object of all the array elements of the paths file
+     * 
      * @return object
      */
-    public function getPathSettings()
+    public function getPathSettings(): object
     {
         return (object) require __DIR__ . '/../../config/appPaths.php';
     }

@@ -3,11 +3,11 @@
 namespace Core\Client\Authentification;
 
 use Core\Http\ResponseComplements\redirectResponse;
-use Core\Support\Crypto;
-use Core\Support\Formating\MsgParser;
 
 trait createsUsers
 {
+
+    use hashesPasswords;
 
     public function newUser(array $data)
     {
@@ -15,23 +15,11 @@ trait createsUsers
         $password = $this->config->auth_keys['password'];
         $user = $this->config->auth_keys['user'];
 
-        $data[$password] = Crypto::cryptoPassword($data[$password]);
+        $data[$password] = $this->hash($data[$password]);
 
         if ($this->userIsUnique($data[$user])) $this->model::insert($data);
 
-        else {
-
-            return new redirectResponse(
-                'back',
-                [
-                    'error' => MsgParser::format(
-                        $this->config->response_msgs['user_error'],
-                        $data[$user]
-                    )
-                ]
-            );
-            
-        }
+        else return new redirectResponse('back');
     }
 
     private function userIsUnique(string $user): bool

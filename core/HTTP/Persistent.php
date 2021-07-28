@@ -38,21 +38,26 @@ class Persistent
         return $_SESSION[$key] ?? false;
     }
 
-    public function has($key)
+    public static function has($key)
     {
         self::init();
         return isset($_SESSION[$key]);
     }
 
-    public static function push_value(string $key, $value): void
+    public static function push_value(string $key, string $index, string $value): void
     {
         self::init();
-        $_SESSION[$key][] = $value;
+        $_SESSION[$key][$index] = $value;
     }
 
     public static function under_push(string $session_key, string $key, $value)
     {
         self::init();
         $_SESSION[$session_key][][$key] = $value;
+    }
+
+    public static function compoment(): array
+    {
+        return $_SESSION;
     }
 }

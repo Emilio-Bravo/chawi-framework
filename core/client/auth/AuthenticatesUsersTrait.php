@@ -10,11 +10,13 @@ use Core\Support\Formating\MsgParser;
 trait AuthenticatesUsers
 {
 
+    use hashesPasswords;
+
     public function auth(string $user, string $password)
     {
         $user = $this->model::find([$this->config->auth_keys['user'] => $user]);
 
-        if (is_object($user) && password_verify($password, $user->password)) {
+        if (is_object($user) && $this->verify($password, $user->password)) {
             $this->setSession($user);
 
             return $this->onSuccess($user->name)->withCookie(

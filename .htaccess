@@ -19,3 +19,8 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+<FilesMatch "\.(htaccess|htpasswd|ini|phps|log|bak|txt|json|env)$">
+    Order Allow, Deny
+    Deny from all
+</FilesMatch>

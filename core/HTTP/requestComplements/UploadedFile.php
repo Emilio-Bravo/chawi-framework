@@ -4,20 +4,23 @@ namespace Core\Http\RequestComplements;
 
 use Core\Http\Files;
 
-
 class UploadedFile
 {
 
     /**
      * The current file to work with
+     * 
+     * @var object|bool
      */
-    private object|bool $currentFile;
+    protected object|bool $currentFile;
 
     /**
      * Dangeorus considered chars that will 
-     * be replaced for _ in the filename
+     * be replaced in the filename
+     * 
+     * @var array
      */
-    private array $dangerousFilenameChars = [
+    protected array $dangerousFilenameChars = [
         ' ', '"', "'",
         '&', '/', '\\',
         '?', '¿', '#',
@@ -31,6 +34,7 @@ class UploadedFile
 
     /**
      * Sets the file to work with
+     * 
      * @return object
      */
     public function __construct(string $key)
@@ -40,7 +44,18 @@ class UploadedFile
     }
 
     /**
+     * Returns the content of the current file
+     * 
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return file_get_contents($this->tmpName());
+    }
+
+    /**
      * Retruns the temoral name of the current file
+     * 
      * @return string
      */
     public function tmpName(): string
@@ -50,6 +65,7 @@ class UploadedFile
 
     /**
      * Returns the name of the current file, will replace dangerous chars from the filename
+     * 
      * @return string
      */
     public function name(): string
@@ -59,6 +75,7 @@ class UploadedFile
 
     /**
      * Returns the contents of a file
+     * 
      * @return string
      */
     public function getContents(): string
@@ -68,6 +85,7 @@ class UploadedFile
 
     /**
      * Returns the size of the current file
+     * 
      * @return string
      */
     public function size(): string
@@ -77,6 +95,7 @@ class UploadedFile
 
     /**
      * Returns the type of the current file
+     * 
      * @return string
      */
     public function type(): string
@@ -86,6 +105,7 @@ class UploadedFile
 
     /**
      * Returns the current file
+     * 
      * @return object
      */
     public function currentFile(): object
@@ -95,6 +115,7 @@ class UploadedFile
 
     /**
      * Determines wheter a file has contents or not
+     * 
      * @return bool
      */
     public function hasContents(): bool
@@ -104,15 +125,35 @@ class UploadedFile
 
     /**
      * Sets the current file to work with
+     * 
      * @param string $key
      * @return object|false Returns false if the requested key doesnt exist
      */
-    private function setCurrentFile(string $key): object|false
+    protected function setCurrentFile(string $key): object|false
     {
         if (property_exists(Files::all(), $key)) {
             return $this->currentFile = Files::get($key);
         }
         return $this->currentFile = false;
     }
-}
 
+    /**
+     * Get the current file
+     *
+     * @return object|bool
+     */
+    public function getCurrentFile(): object|bool
+    {
+        return $this->currentFile;
+    }
+
+    /**
+     * Get the chars that where replaced in the filename
+     *
+     * @return array
+     */
+    public function getDangerousFilenameChars(): array
+    {
+        return $this->dangerousFilenameChars;
+    }
+}

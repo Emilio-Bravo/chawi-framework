@@ -8,31 +8,37 @@ use Core\Http\RequestComplements\UploadedFile;
 trait HandlesImages
 {
     private array $image_types = [
-        IMAGETYPE_GIF,
-        IMAGETYPE_JPEG,
-        IMAGETYPE_PNG,
-        IMAGETYPE_SWF,
-        IMAGETYPE_PSD,
-        IMAGETYPE_BMP,
-        IMAGETYPE_TIFF_II,
-        IMAGETYPE_TIFF_MM,
-        IMAGETYPE_JPC,
-        IMAGETYPE_JP2,
-        IMAGETYPE_JPX,
-        IMAGETYPE_JB2,
-        IMAGETYPE_SWC,
-        IMAGETYPE_IFF,
-        IMAGETYPE_WBMP,
-        IMAGETYPE_XBM,
-        IMAGETYPE_ICO,
-        IMAGETYPE_WEBP
+        'bmp'     => 'image/bmp',
+        'cgm'     => 'image/cgm',
+        'djv'     => 'image/vnd.djvu',
+        'djvu'    => 'image/vnd.djvu',
+        'gif'     => 'image/gif',
+        'ico'     => 'image/x-icon',
+        'jpe'     => 'image/jpeg',
+        'jpeg'    => 'image/jpeg',
+        'jpg'     => 'image/jpeg',
+        'pbm'     => 'image/x-portable-bitmap',
+        'pgm'     => 'image/x-portable-graymap',
+        'png'     => 'image/png',
+        'pnm'     => 'image/x-portable-anymap',
+        'ppm'     => 'image/x-portable-pixmap',
+        'ras'     => 'image/x-cmu-raster',
+        'rgb'     => 'image/x-rgb',
+        'svg'     => 'image/svg+xml',
+        'svgz'    => 'image/svg+xml',
+        'tif'     => 'image/tiff',
+        'tiff'    => 'image/tiff',
+        'wbmp'    => 'image/vnd.wap.wbmp',
+        'xbm'     => 'image/x-xbitmap',
+        'xpm'     => 'image/x-xpixmap',
+        'xwd'     => 'image/x-xwindowdump',
+        'ief'     => 'image/ief'
     ];
 
     private array $image_mime_type = [];
 
     public function isImage(UploadedFile $file): bool
     {
-        $this->buildImageMimeTypes();
         return in_array($file->currentFile()->type, $this->image_mime_type);
     }
 
@@ -57,10 +63,5 @@ trait HandlesImages
     public function getFile($path, string $filename): string
     {
         return Storage::in($path)->get($filename);
-    }
-
-    private function buildImageMimeTypes(): void
-    {
-        array_map(fn ($value) => $this->image_mime_type[] = image_type_to_mime_type($value), $this->image_types);
     }
 }
